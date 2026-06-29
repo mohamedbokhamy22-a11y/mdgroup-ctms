@@ -1,0 +1,475 @@
+// MDGroup Clinical Trial Management System — Prisma Schema
+// Prompt used: "Design a PostgreSQL schema for MDGroup's clinical trial coordination platform.
+// Entities needed: Users (system operators/navigators), Sponsors (pharma companies), Studies
+// (clinical trials), Sites (research sites), Participants (patients), Enrollments (patient-study
+// join), Visits (site-based or home), TravelArrangements, Payments (stipends/reimbursements),
+// HCPAssignments (healthcare professional staffing per visit), EquipmentRequests (logistics),
+// Messages (patient-navigator communication), AdverseEvents (safety reporting).
+// Use soft deletes, audit timestamps, proper enums for status fields."
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum UserRole {
+  ADMIN
+  COORDINATOR
+  NAVIGATOR
+  SITE_STAFF
+  SPONSOR_USER
+}
+
+enum StudyPhase {
+  PHASE_1
+  PHASE_2
+  PHASE_3
+  PHASE_4
+  OBSERVATIONAL
+}
+
+enum StudyStatus {
+  DRAFT
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  TERMINATED
+}
+
+enum EnrollmentStatus {
+  SCREENING
+  ENROLLED
+  ACTIVE
+  COMPLETED
+  WITHDRAWN
+  SCREEN_FAILED
+}
+
+enum VisitType {
+  SITE_BASED
+  HOME_VISIT
+  TELEHEALTH
+  REMOTE_MONITORING
+}
+
+enum VisitStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  MISSED
+  CANCELLED
+  RESCHEDULED
+}
+
+enum TravelMode {
+  FLIGHT
+  TRAIN
+  CAR_HIRE
+  TAXI
+  AMBULANCE
+  OTHER
+}
+
+enum TravelStatus {
+  PENDING
+  BOOKED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentType {
+  STIPEND
+  TRAVEL_REIMBURSEMENT
+  MEAL_ALLOWANCE
+  ACCOMMODATION
+  OTHER_EXPENSE
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  PROCESSING
+  PAID
+  REJECTED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  PREPAID_CARD
+  BANK_TRANSFER
+  CHECK
+  DIGITAL_WALLET
+}
+
+enum EquipmentStatus {
+  REQUESTED
+  ALLOCATED
+  DISPATCHED
+  DELIVERED
+  IN_USE
+  RETURNED
+  LOST
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum AdverseEventSeverity {
+  MILD
+  MODERATE
+  SEVERE
+  LIFE_THREATENING
+  FATAL
+}
+
+enum AdverseEventStatus {
+  REPORTED
+  UNDER_REVIEW
+  RESOLVED
+  ONGOING
+}
+
+// ─────────────────────────────────────────────
+// MODELS
+// ─────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole @default(NAVIGATOR)
+  phone        String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+
+  assignedMessages    Message[]         @relation("NavigatorMessages")
+  hcpAssignments      HCPAssignment[]
+  createdPayments     Payment[]         @relation("PaymentCreatedBy")
+  approvedPayments    Payment[]         @relation("PaymentApprovedBy")
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model Sponsor {
+  id           String   @id @default(cuid())
+  name         String
+  contactEmail String
+  contactPhone String?
+  address      String?
+  country      String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+
+  studies Study[]
+
+  @@map("sponsors")
+}
+
+model Study {
+  id              String      @id @default(cuid())
+  protocolNumber  String      @unique
+  title           String
+  phase           StudyPhase
+  status          StudyStatus @default(DRAFT)
+  indication      String
+  sponsorId       String
+  therapeuticArea String?
+  startDate       DateTime?
+  endDate         DateTime?
+  targetEnrollment Int        @default(0)
+  description     String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  deletedAt       DateTime?
+
+  sponsor          Sponsor        @relation(fields: [sponsorId], references: [id])
+  sites            StudySite[]
+  enrollments      Enrollment[]
+
+  @@index([sponsorId])
+  @@index([status])
+  @@index([protocolNumber])
+  @@map("studies")
+}
+
+model Site {
+  id          String   @id @default(cuid())
+  name        String
+  siteCode    String   @unique
+  address     String
+  city        String
+  country     String
+  principalInvestigator String?
+  contactEmail String?
+  contactPhone String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  studies     StudySite[]
+  enrollments Enrollment[]
+  visits      Visit[]
+
+  @@index([siteCode])
+  @@map("sites")
+}
+
+model StudySite {
+  id            String   @id @default(cuid())
+  studyId       String
+  siteId        String
+  activatedAt   DateTime?
+  deactivatedAt DateTime?
+  createdAt     DateTime @default(now())
+
+  study Study @relation(fields: [studyId], references: [id])
+  site  Site  @relation(fields: [siteId], references: [id])
+
+  @@unique([studyId, siteId])
+  @@map("study_sites")
+}
+
+model Participant {
+  id              String   @id @default(cuid())
+  externalRef     String   @unique
+  firstName       String
+  lastName        String
+  dateOfBirth     DateTime
+  email           String?
+  phone           String
+  address         String?
+  city            String?
+  country         String
+  language        String   @default("en")
+  emergencyContact String?
+  requiresAssistance Boolean @default(false)
+  notes           String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  deletedAt       DateTime?
+
+  enrollments        Enrollment[]
+  messages           Message[]
+  travelArrangements TravelArrangement[]
+  payments           Payment[]
+  adverseEvents      AdverseEvent[]
+
+  @@index([externalRef])
+  @@map("participants")
+}
+
+model Enrollment {
+  id              String           @id @default(cuid())
+  participantId   String
+  studyId         String
+  siteId          String
+  status          EnrollmentStatus @default(SCREENING)
+  screeningDate   DateTime?
+  enrollmentDate  DateTime?
+  completionDate  DateTime?
+  withdrawalDate  DateTime?
+  withdrawalReason String?
+  subjectNumber   String?          @unique
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  participant Participant @relation(fields: [participantId], references: [id])
+  study       Study       @relation(fields: [studyId], references: [id])
+  site        Site        @relation(fields: [siteId], references: [id])
+  visits      Visit[]
+
+  @@unique([participantId, studyId])
+  @@index([studyId])
+  @@index([siteId])
+  @@index([status])
+  @@map("enrollments")
+}
+
+model Visit {
+  id             String      @id @default(cuid())
+  enrollmentId   String
+  siteId         String
+  visitType      VisitType   @default(SITE_BASED)
+  status         VisitStatus @default(SCHEDULED)
+  visitNumber    Int
+  visitName      String
+  scheduledDate  DateTime
+  completedDate  DateTime?
+  duration       Int?        // minutes
+  notes          String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  enrollment         Enrollment          @relation(fields: [enrollmentId], references: [id])
+  site               Site                @relation(fields: [siteId], references: [id])
+  travelArrangements TravelArrangement[]
+  hcpAssignments     HCPAssignment[]
+  equipmentRequests  EquipmentRequest[]
+
+  @@index([enrollmentId])
+  @@index([siteId])
+  @@index([status])
+  @@index([scheduledDate])
+  @@map("visits")
+}
+
+model TravelArrangement {
+  id              String       @id @default(cuid())
+  participantId   String
+  visitId         String
+  travelMode      TravelMode
+  status          TravelStatus @default(PENDING)
+  origin          String
+  destination     String
+  departureDate   DateTime
+  returnDate      DateTime?
+  bookingRef      String?
+  supplier        String?
+  estimatedCost   Float?
+  actualCost      Float?
+  notes           String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  participant Participant @relation(fields: [participantId], references: [id])
+  visit       Visit       @relation(fields: [visitId], references: [id])
+
+  @@index([participantId])
+  @@index([visitId])
+  @@index([status])
+  @@map("travel_arrangements")
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  participantId   String
+  paymentType     PaymentType
+  status          PaymentStatus @default(PENDING)
+  amount          Float
+  currency        String        @default("USD")
+  paymentMethod   PaymentMethod @default(PREPAID_CARD)
+  description     String
+  referenceNumber String?       @unique
+  visitId         String?
+  createdById     String
+  approvedById    String?
+  processedAt     DateTime?
+  paidAt          DateTime?
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  participant Participant @relation(fields: [participantId], references: [id])
+  createdBy   User        @relation("PaymentCreatedBy", fields: [createdById], references: [id])
+  approvedBy  User?       @relation("PaymentApprovedBy", fields: [approvedById], references: [id])
+
+  @@index([participantId])
+  @@index([status])
+  @@index([paymentType])
+  @@map("payments")
+}
+
+model HCPAssignment {
+  id           String   @id @default(cuid())
+  visitId      String
+  userId       String
+  specialty    String
+  confirmedAt  DateTime?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  visit Visit @relation(fields: [visitId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@unique([visitId, userId])
+  @@index([visitId])
+  @@index([userId])
+  @@map("hcp_assignments")
+}
+
+model EquipmentRequest {
+  id             String          @id @default(cuid())
+  visitId        String
+  equipmentName  String
+  quantity       Int             @default(1)
+  status         EquipmentStatus @default(REQUESTED)
+  supplier       String?
+  trackingNumber String?
+  dispatchedAt   DateTime?
+  deliveredAt    DateTime?
+  returnedAt     DateTime?
+  notes          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  visit Visit @relation(fields: [visitId], references: [id])
+
+  @@index([visitId])
+  @@index([status])
+  @@map("equipment_requests")
+}
+
+model Message {
+  id            String           @id @default(cuid())
+  participantId String
+  navigatorId   String?
+  direction     MessageDirection
+  subject       String?
+  body          String
+  channel       String           @default("PLATFORM")
+  isRead        Boolean          @default(false)
+  readAt        DateTime?
+  sentAt        DateTime         @default(now())
+  createdAt     DateTime         @default(now())
+
+  participant Participant @relation(fields: [participantId], references: [id])
+  navigator   User?       @relation("NavigatorMessages", fields: [navigatorId], references: [id])
+
+  @@index([participantId])
+  @@index([navigatorId])
+  @@index([isRead])
+  @@map("messages")
+}
+
+model AdverseEvent {
+  id              String               @id @default(cuid())
+  participantId   String
+  severity        AdverseEventSeverity
+  status          AdverseEventStatus   @default(REPORTED)
+  eventDate       DateTime
+  description     String
+  outcome         String?
+  reportedToSponsor Boolean            @default(false)
+  reportedAt      DateTime             @default(now())
+  resolvedAt      DateTime?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  participant Participant @relation(fields: [participantId], references: [id])
+
+  @@index([participantId])
+  @@index([severity])
+  @@index([status])
+  @@map("adverse_events")
+}
