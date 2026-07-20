@@ -13,6 +13,7 @@ import Messages from './pages/Messages'
 import AdverseEvents from './pages/AdverseEvents'
 import Sponsors from './pages/Sponsors'
 import Sites from './pages/Sites'
+import Reports from './pages/Reports'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="payments" element={<Payments />} />
         <Route path="messages" element={<Messages />} />
         <Route path="adverse-events" element={<AdverseEvents />} />
+        <Route path="reports" element={<Reports />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

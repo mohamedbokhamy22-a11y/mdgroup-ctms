@@ -15,21 +15,21 @@ interface Props<T> {
 
 export default function Table<T>({ columns, data, onRowClick, emptyMessage = 'No records found' }: Props<T>) {
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-slate-200 bg-slate-50">
+          <tr className="border-b border-slate-100">
             {columns.map((col, i) => (
-              <th key={i} className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" style={{ width: col.width }}>
+              <th key={i} className="px-5 py-3.5 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50/80" style={{ width: col.width }}>
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-slate-50">
           {data.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="px-4 py-10 text-center text-slate-400">
+              <td colSpan={columns.length} className="px-5 py-12 text-center text-slate-300 text-sm">
                 {emptyMessage}
               </td>
             </tr>
@@ -38,10 +38,10 @@ export default function Table<T>({ columns, data, onRowClick, emptyMessage = 'No
               <tr
                 key={i}
                 onClick={() => onRowClick?.(row)}
-                className={`border-b border-slate-100 last:border-0 ${onRowClick ? 'cursor-pointer hover:bg-slate-50' : ''}`}
+                className={`transition-colors ${onRowClick ? 'cursor-pointer hover:bg-blue-50/40' : 'hover:bg-slate-50/60'}`}
               >
                 {columns.map((col, j) => (
-                  <td key={j} className="px-4 py-3 text-slate-700">{col.cell(row)}</td>
+                  <td key={j} className="px-5 py-3.5 text-slate-600">{col.cell(row)}</td>
                 ))}
               </tr>
             ))
