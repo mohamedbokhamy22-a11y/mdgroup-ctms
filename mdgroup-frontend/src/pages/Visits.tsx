@@ -105,18 +105,17 @@ export default function Visits() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <PageHeader
-        title="Visits"
-        subtitle="Scheduled and completed trial visits"
-        action={
-          <span className="text-sm text-slate-500">
-            {filtered.length} visit{filtered.length !== 1 ? 's' : ''}
-          </span>
-        }
-      />
-
-      <div className="px-8 pb-10 space-y-4">
+    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
+      <div className="px-8 pt-8 pb-10 space-y-4">
+        <PageHeader
+          title="Visits"
+          subtitle="Scheduled and completed trial visits"
+          action={
+            <span className="text-sm text-slate-500">
+              {filtered.length} visit{filtered.length !== 1 ? 's' : ''}
+            </span>
+          }
+        />
         {/* ── filters ── */}
         <div className="flex flex-wrap items-center gap-3">
           <select

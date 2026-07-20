@@ -35,10 +35,11 @@ export default function Sites() {
   )
 
   return (
-    <div className="px-8 py-8">
-      <PageHeader title="Sites" subtitle="Global research site network" action={
-        <span className="text-sm text-slate-500">{sites.length} sites</span>
-      } />
+    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
+      <div className="px-8 pt-8 pb-10 space-y-4">
+        <PageHeader title="Sites" subtitle="Global research site network" action={
+          <span className="text-sm text-slate-500">{sites.length} sites</span>
+        } />
 
       {/* Country Overview */}
       <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
@@ -84,6 +85,7 @@ export default function Sites() {
           data={sites}
         />
       )}
+      </div>
     </div>
   )
 }

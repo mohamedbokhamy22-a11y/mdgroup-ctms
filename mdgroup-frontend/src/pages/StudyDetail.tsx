@@ -119,7 +119,7 @@ export default function StudyDetail() {
 
   if (studyLoading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-slate-100">
         <Spinner />
       </div>
     )
@@ -127,14 +127,14 @@ export default function StudyDetail() {
 
   if (!study) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
         <p className="text-slate-400">Study not found.</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-100">
       {/* ── back link ── */}
       <div className="px-8 pt-6">
         <Link

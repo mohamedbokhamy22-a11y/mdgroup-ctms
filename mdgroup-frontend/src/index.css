@@ -1,21 +1,106 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* ── Design Tokens (MDGroup CTMS — B2B Enterprise Dashboard) ── */
+:root {
+  --color-primary:        #1E40AF;
+  --color-primary-dark:   #0F172A;
+  --color-secondary:      #0369A1;
+  --color-accent:         #D97706;
+  --color-accent-light:   #FEF3C7;
+  --color-background:     #F8FAFC;
+  --color-surface:        #FFFFFF;
+  --color-foreground:     #0F172A;
+  --color-muted:          #E8ECF1;
+  --color-muted-fg:       #64748B;
+  --color-border:         #E2E8F0;
+  --color-destructive:    #DC2626;
+  --color-ring:           #1E40AF;
+  --color-success:        #15803D;
+  --color-warning:        #D97706;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  --sidebar-bg-from:      #0F172A;
+  --sidebar-bg-to:        #1E293B;
+  --sidebar-accent:       #0369A1;
+
+  --header-height:        56px;
+  --sidebar-width:        240px;
+  --grid-gap:             8px;
+  --card-padding:         16px;
+  --table-row-height:     36px;
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   18px;
+
+  --shadow-sm:  0 1px 2px rgba(15,23,42,0.06);
+  --shadow-md:  0 1px 3px rgba(15,23,42,0.08), 0 4px 12px rgba(15,23,42,0.06);
+  --shadow-lg:  0 4px 6px rgba(15,23,42,0.07), 0 10px 24px rgba(15,23,42,0.08);
+
+  --transition: 200ms ease;
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: #f1f5f9;
-  color: #1e293b;
+  font-family: 'Fira Sans', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--color-background);
+  color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#root {
-  width: 100%;
-  min-height: 100vh;
+#root { width: 100%; min-height: 100vh; }
+
+/* Mono numbers and data */
+.font-mono, code, .data-value {
+  font-family: 'Fira Code', monospace;
 }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-muted); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-muted-fg); }
+
+/* Form controls */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+textarea,
+select {
+  font-family: 'Fira Sans', system-ui, sans-serif;
+  font-size: 13px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-foreground);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.12);
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+button { font-family: inherit; cursor: pointer; }

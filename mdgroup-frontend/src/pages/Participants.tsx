@@ -116,19 +116,18 @@ export default function Participants() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <PageHeader
-        title="Participants"
-        subtitle="Patient records and enrollment tracking"
-        action={
-          <div className="flex items-center gap-2 text-sm text-slate-500">
-            <Users className="w-4 h-4" />
-            <span>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
-          </div>
-        }
-      />
-
-      <div className="px-8 pb-10 space-y-4">
+    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
+      <div className="px-8 pt-8 pb-10 space-y-4">
+        <PageHeader
+          title="Participants"
+          subtitle="Patient records and enrollment tracking"
+          action={
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <Users className="w-4 h-4" />
+              <span>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
+            </div>
+          }
+        />
         {/* ── filters ── */}
         <div className="flex flex-wrap items-center gap-3">
           {/* search */}

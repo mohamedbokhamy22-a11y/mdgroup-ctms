@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext'
 import {
   LayoutDashboard, FlaskConical, Building2, Users, CalendarCheck,
   CreditCard, MessageSquare, AlertTriangle, MapPin, LogOut,
-  Activity, BarChart3, ChevronRight
+  Activity, BarChart3
 } from 'lucide-react'
 import clsx from 'clsx'
 
@@ -30,25 +30,48 @@ export default function Sidebar() {
   const { user, logout } = useAuth()
 
   return (
-    <aside className="flex flex-col w-64 min-h-screen shrink-0" style={{ background: 'linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%)' }}>
+    <aside
+      className="flex flex-col shrink-0 relative"
+      style={{
+        width: 'var(--sidebar-width)',
+        minHeight: '100vh',
+        background: 'linear-gradient(180deg, #0F172A 0%, #1E293B 100%)',
+        borderRight: '1px solid rgba(255,255,255,0.06)',
+      }}
+    >
+      {/* Top glow */}
+      <div
+        className="absolute top-0 inset-x-0 h-32 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 50% -10%, rgba(3,105,161,0.2) 0%, transparent 70%)' }}
+      />
+
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
-        <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 shadow-lg shadow-blue-500/30">
-          <Activity size={17} className="text-white" />
+      <div className="relative flex items-center gap-3 px-5 pt-5 pb-4">
+        <div
+          className="flex items-center justify-center w-8 h-8 rounded-lg shrink-0"
+          style={{
+            background: 'linear-gradient(135deg, #1E40AF 0%, #0369A1 100%)',
+            boxShadow: '0 0 0 1px rgba(3,105,161,0.5), 0 3px 10px rgba(3,105,161,0.3)',
+          }}
+        >
+          <Activity size={15} className="text-white" />
         </div>
         <div>
-          <p className="text-sm font-bold text-white leading-none tracking-wide">MDGroup</p>
-          <p className="text-xs text-blue-300/70 mt-0.5 font-medium">CTMS Platform</p>
+          <p className="text-white font-bold text-[13px] leading-none tracking-wide">MDGroup</p>
+          <p className="text-[10px] text-slate-500 mt-0.5 font-medium tracking-widest uppercase">CTMS</p>
         </div>
       </div>
 
+      {/* Divider */}
+      <div className="mx-4 h-px bg-white/5" />
+
       {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
+      <nav className="relative flex-1 px-3 py-4 overflow-y-auto space-y-5">
         {groups.map(({ key, label }) => {
           const items = nav.filter(n => n.group === key)
           return (
             <div key={key}>
-              <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest px-3 mb-1.5">{label}</p>
+              <p className="text-[9px] font-bold text-slate-600 uppercase tracking-[0.16em] px-3 mb-1.5">{label}</p>
               <div className="space-y-0.5">
                 {items.map(({ to, label, icon: Icon }) => (
                   <NavLink
@@ -57,20 +80,37 @@ export default function Sidebar() {
                     end={to === '/'}
                     className={({ isActive }) =>
                       clsx(
-                        'group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150',
+                        'group relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12.5px] font-medium transition-all',
                         isActive
-                          ? 'bg-white/15 text-white shadow-sm'
-                          : 'text-white/50 hover:bg-white/8 hover:text-white/80'
+                          ? 'text-white'
+                          : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
                       )
                     }
                   >
                     {({ isActive }) => (
                       <>
-                        <div className="flex items-center gap-3">
-                          <Icon size={16} className={isActive ? 'text-blue-300' : ''} />
-                          {label}
-                        </div>
-                        {isActive && <ChevronRight size={13} className="text-blue-300" />}
+                        {isActive && (
+                          <div
+                            className="absolute inset-0 rounded-lg"
+                            style={{
+                              background: 'linear-gradient(135deg, rgba(3,105,161,0.3) 0%, rgba(30,64,175,0.15) 100%)',
+                              border: '1px solid rgba(3,105,161,0.3)',
+                            }}
+                          />
+                        )}
+                        {/* Left accent bar */}
+                        {isActive && (
+                          <div
+                            className="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-full"
+                            style={{ background: '#0369A1' }}
+                          />
+                        )}
+                        <Icon
+                          size={14}
+                          className="relative shrink-0"
+                          style={{ color: isActive ? '#38BDF8' : undefined }}
+                        />
+                        <span className="relative flex-1 leading-none">{label}</span>
                       </>
                     )}
                   </NavLink>
@@ -81,18 +121,28 @@ export default function Sidebar() {
         })}
       </nav>
 
+      {/* Divider */}
+      <div className="mx-4 h-px bg-white/5" />
+
       {/* User */}
-      <div className="px-4 py-4 border-t border-white/10 bg-white/5">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 text-xs font-bold text-white shrink-0 shadow">
-            {user?.firstName[0]}{user?.lastName[0]}
+      <div className="px-3 py-3">
+        <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)' }}>
+          <div
+            className="flex items-center justify-center w-7 h-7 rounded-full text-[10px] font-bold text-white shrink-0"
+            style={{ background: 'linear-gradient(135deg, #1E40AF 0%, #0369A1 100%)' }}
+          >
+            {user?.firstName?.[0]}{user?.lastName?.[0]}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-white truncate">{user?.firstName} {user?.lastName}</p>
-            <p className="text-xs text-white/40 truncate">{user?.role?.replace(/_/g, ' ')}</p>
+            <p className="text-[12px] font-semibold text-white/80 truncate leading-none">{user?.firstName} {user?.lastName}</p>
+            <p className="text-[10px] text-slate-600 truncate mt-0.5">{user?.role?.replace(/_/g, ' ')}</p>
           </div>
-          <button onClick={logout} className="text-white/30 hover:text-white/80 transition-colors p-1 rounded-lg hover:bg-white/10" title="Logout">
-            <LogOut size={15} />
+          <button
+            onClick={logout}
+            title="Logout"
+            className="text-slate-600 hover:text-slate-400 transition-colors p-1 rounded cursor-pointer"
+          >
+            <LogOut size={13} />
           </button>
         </div>
       </div>

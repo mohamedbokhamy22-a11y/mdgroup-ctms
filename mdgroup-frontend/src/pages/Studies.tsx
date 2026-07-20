@@ -117,19 +117,18 @@ export default function Studies() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
+      <div className="px-8 pt-8 pb-10 space-y-4">
       <PageHeader
         title="Studies"
         subtitle="Clinical trial protocol management"
         action={
-          <div className="flex items-center gap-2 text-sm text-slate-500">
-            <FlaskConical className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-[12px] font-semibold text-slate-500 px-3 py-1.5 rounded-xl" style={{ background: 'rgba(15,23,42,0.05)' }}>
+            <FlaskConical className="w-3.5 h-3.5" />
             <span>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
           </div>
         }
       />
-
-      <div className="px-8 pb-10 space-y-4">
         {/* ── filters ── */}
         <div className="flex flex-wrap items-center gap-3">
           {/* search */}

@@ -99,18 +99,17 @@ export default function Sponsors() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <PageHeader
-        title="Sponsors"
-        subtitle="Pharmaceutical company partners"
-        action={
-          <span className="text-sm text-slate-500">
-            {filtered.length} sponsor{filtered.length !== 1 ? 's' : ''}
-          </span>
-        }
-      />
-
-      <div className="px-8 pb-10 space-y-4">
+    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
+      <div className="px-8 pt-8 pb-10 space-y-4">
+        <PageHeader
+          title="Sponsors"
+          subtitle="Pharmaceutical company partners"
+          action={
+            <span className="text-sm text-slate-500">
+              {filtered.length} sponsor{filtered.length !== 1 ? 's' : ''}
+            </span>
+          }
+        />
         {/* ── search ── */}
         <div className="flex items-center gap-3">
           <div className="relative flex-1 min-w-[220px] max-w-xs">

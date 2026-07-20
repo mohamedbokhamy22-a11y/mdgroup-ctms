@@ -119,7 +119,7 @@ export default function ParticipantDetail() {
 
   if (participantLoading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-slate-100">
         <Spinner />
       </div>
     )
@@ -127,7 +127,7 @@ export default function ParticipantDetail() {
 
   if (!participant) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
         <p className="text-slate-400">Participant not found.</p>
       </div>
     )
@@ -147,7 +147,7 @@ export default function ParticipantDetail() {
       : null
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-100">
       {/* ── back link ── */}
       <div className="px-8 pt-6">
         <Link

@@ -140,18 +140,17 @@ export default function AdverseEvents() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <PageHeader
-        title="Adverse Events"
-        subtitle="Safety incident monitoring and reporting"
-        action={
-          <span className="text-sm text-slate-500">
-            {filtered.length} event{filtered.length !== 1 ? 's' : ''}
-          </span>
-        }
-      />
-
-      <div className="px-8 pb-10 space-y-6">
+    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
+      <div className="px-8 pt-8 pb-10 space-y-6">
+        <PageHeader
+          title="Adverse Events"
+          subtitle="Safety incident monitoring and reporting"
+          action={
+            <span className="text-sm text-slate-500">
+              {filtered.length} event{filtered.length !== 1 ? 's' : ''}
+            </span>
+          }
+        />
         {/* ── summary cards ── */}
         <div className="grid grid-cols-4 gap-4">
           <CountCard label="Total Events" count={totalCount}    accent="border-l-4 border-l-slate-400" />

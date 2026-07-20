@@ -191,18 +191,17 @@ export default function Payments() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <PageHeader
-        title="Payments"
-        subtitle="Stipends, reimbursements and expense claims"
-        action={
-          <span className="text-sm text-slate-500">
-            {filtered.length} payment{filtered.length !== 1 ? 's' : ''}
-          </span>
-        }
-      />
-
-      <div className="px-8 pb-10 space-y-6">
+    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
+      <div className="px-8 pt-8 pb-10 space-y-6">
+        <PageHeader
+          title="Payments"
+          subtitle="Stipends, reimbursements and expense claims"
+          action={
+            <span className="text-sm text-slate-500">
+              {filtered.length} payment{filtered.length !== 1 ? 's' : ''}
+            </span>
+          }
+        />
         {/* ── summary cards ── */}
         <div className="grid grid-cols-3 gap-4">
           <SummaryCard label="Total Paid"      amount={totalPaid}       accent="border-l-4 border-l-green-400" />

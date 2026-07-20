@@ -120,22 +120,23 @@ export default function Messages() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <PageHeader
-        title="Messages"
-        subtitle="Patient communication center"
-        action={
-          <span className="text-sm text-slate-500">
-            {threads.length} conversation{threads.length !== 1 ? 's' : ''}
-          </span>
-        }
-      />
+    <div className="min-h-screen bg-slate-100 flex flex-col">
+      <div className="px-8 pt-8 pb-10 flex flex-col flex-1 min-h-0 gap-4">
+        <PageHeader
+          title="Messages"
+          subtitle="Patient communication center"
+          action={
+            <span className="text-sm text-slate-500">
+              {threads.length} conversation{threads.length !== 1 ? 's' : ''}
+            </span>
+          }
+        />
 
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <div className="px-8 pb-10 flex gap-4 flex-1 min-h-0">
-          {/* ── left panel: participant list ── */}
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <div className="flex gap-4 flex-1 min-h-0">
+            {/* ── left panel: participant list ── */}
           <div className="w-1/3 bg-white rounded-xl border border-slate-200 overflow-hidden flex flex-col">
             <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -260,8 +261,9 @@ export default function Messages() {
               </>
             )}
           </div>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
