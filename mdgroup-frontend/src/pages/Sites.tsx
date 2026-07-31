@@ -5,7 +5,6 @@ import { sitesApi } from '../api/endpoints'
 import Table from '../components/ui/Table'
 import PageHeader from '../components/ui/PageHeader'
 
-const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 
 interface Site {
   id: string; siteCode: string; name: string; city: string; country: string

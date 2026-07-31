@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft, FlaskConical, Users, Calendar, MapPin } from 'lucide-react'
+import { ArrowLeft, FlaskConical, Users, Calendar } from 'lucide-react'
 
 import { studiesApi, enrollmentsApi } from '../api/endpoints'
 import Badge from '../components/ui/Badge'

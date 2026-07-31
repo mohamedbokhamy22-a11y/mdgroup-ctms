@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 import { Search, Users } from 'lucide-react'
 
 import { participantsApi } from '../api/endpoints'
-import Badge from '../components/ui/Badge'
 import Table from '../components/ui/Table'
 import PageHeader from '../components/ui/PageHeader'
 
