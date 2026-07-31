@@ -1,30 +1,4 @@
-databases:
-  - name: mdgroup-db
-    databaseName: mdgroup_ctms
-    user: mdgroup
-    plan: free
-
 services:
-  - type: web
-    name: mdgroup-ctms-api
-    runtime: node
-    rootDir: mdgroup-ctms
-    buildCommand: npm install && npx prisma generate && npm run build
-    startCommand: npx prisma db push && node dist/index.js
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: DATABASE_URL
-        fromDatabase:
-          name: mdgroup-db
-          property: connectionString
-      - key: JWT_SECRET
-        generateValue: true
-      - key: JWT_EXPIRES_IN
-        value: 7d
-      - key: BCRYPT_ROUNDS
-        value: "12"
-
   - type: web
     name: mdgroup-ctms-frontend
     runtime: static
@@ -37,4 +11,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        value: https://mdgroup-ctms-api.onrender.com/api
+        value: https://mdgroup-ctms-api.up.railway.app/api
