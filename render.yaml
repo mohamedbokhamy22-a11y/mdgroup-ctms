@@ -8,7 +8,6 @@ services:
   - type: web
     name: mdgroup-ctms-api
     runtime: node
-    plan: free
     rootDir: mdgroup-ctms
     buildCommand: npm install && npx prisma generate && npm run build
     startCommand: npx prisma db push && node dist/index.js
@@ -29,7 +28,6 @@ services:
   - type: web
     name: mdgroup-ctms-frontend
     runtime: static
-    plan: free
     rootDir: mdgroup-frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
