@@ -31,8 +31,8 @@ All endpoints (except \`/api/auth/register\` and \`/api/auth/login\`) require a 
       contact: { name: "MDGroup Engineering", email: "engineering@mdgroup.com" },
     },
     servers: [
+      { url: "https://mdgroup-ctms-production.up.railway.app", description: "Production" },
       { url: "http://localhost:3000", description: "Development" },
-      { url: "https://api.mdgroup.com", description: "Production" },
     ],
     components: {
       securitySchemes: {
