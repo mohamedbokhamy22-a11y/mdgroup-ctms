@@ -16,23 +16,23 @@ interface Props<T> {
 export default function Table<T>({ columns, data, onRowClick, emptyMessage = 'No records found' }: Props<T>) {
   return (
     <div
-      className="overflow-hidden rounded-2xl"
+      className="overflow-hidden rounded-xl overflow-x-auto"
       style={{
         background: '#ffffff',
-        border: '1px solid rgba(15,23,42,0.07)',
-        boxShadow: '0 1px 3px rgba(15,23,42,0.05), 0 4px 16px rgba(15,23,42,0.04)',
+        border: '1px solid var(--color-border)',
+        boxShadow: 'var(--shadow-sm)',
       }}
     >
-      <table className="w-full text-sm">
+      <table className="w-full" style={{ minWidth: '600px' }}>
         <thead>
-          <tr style={{ borderBottom: '1px solid rgba(15,23,42,0.06)', background: 'rgba(248,250,252,0.8)' }}>
+          <tr style={{ borderBottom: '1px solid var(--color-border)', background: '#F9FAFB' }}>
             {columns.map((col, i) => (
               <th
                 key={i}
                 className="px-5 py-3.5 text-left"
                 style={{ width: col.width }}
               >
-                <span className="text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">
+                <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
                   {col.header}
                 </span>
               </th>
@@ -44,10 +44,10 @@ export default function Table<T>({ columns, data, onRowClick, emptyMessage = 'No
             <tr>
               <td colSpan={columns.length} className="px-5 py-16 text-center">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
                     <span className="text-xl">📭</span>
                   </div>
-                  <p className="text-slate-400 text-sm font-medium">{emptyMessage}</p>
+                  <p className="text-gray-400 text-[13px] font-medium">{emptyMessage}</p>
                 </div>
               </td>
             </tr>
@@ -58,18 +58,21 @@ export default function Table<T>({ columns, data, onRowClick, emptyMessage = 'No
                 onClick={() => onRowClick?.(row)}
                 className="transition-colors"
                 style={{
-                  borderTop: i > 0 ? '1px solid rgba(15,23,42,0.04)' : undefined,
+                  borderTop: i > 0 ? '1px solid var(--color-border)' : undefined,
                   cursor: onRowClick ? 'pointer' : undefined,
+                  height: 'var(--table-row-height)',
                 }}
                 onMouseEnter={e => {
-                  if (onRowClick) (e.currentTarget as HTMLTableRowElement).style.background = 'rgba(99,102,241,0.04)'
-                  else (e.currentTarget as HTMLTableRowElement).style.background = 'rgba(15,23,42,0.02)'
+                  if (onRowClick) (e.currentTarget as HTMLTableRowElement).style.background = '#F0F4FF'
+                  else (e.currentTarget as HTMLTableRowElement).style.background = '#F9FAFB'
                 }}
                 onMouseLeave={e => { (e.currentTarget as HTMLTableRowElement).style.background = '' }}
               >
                 {columns.map((col, j) => (
-                  <td key={j} className="px-5 py-3.5 text-[13px] text-slate-600 font-medium">
-                    {col.cell(row)}
+                  <td key={j} className="px-5 py-3 text-[13.5px] text-gray-700" style={{ maxWidth: col.width ?? '200px' }}>
+                    <div className="truncate">
+                      {col.cell(row)}
+                    </div>
                   </td>
                 ))}
               </tr>
