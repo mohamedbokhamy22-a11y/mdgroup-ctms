@@ -25,15 +25,7 @@ export default function AppShell() {
 
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--color-background)' }}>
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-20 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(v => !v)} />
 
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         {/* Header */}
@@ -47,9 +39,10 @@ export default function AppShell() {
           }}
         >
           <div className="flex items-center gap-3">
+            {/* Mobile burger (only shown on small screens where sidebar is hidden) */}
             <button
               onClick={() => setSidebarOpen(v => !v)}
-              className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors cursor-pointer"
+              className="lg:hidden flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors cursor-pointer"
             >
               <Menu size={18} />
             </button>
