@@ -3,8 +3,6 @@ import { useQuery } from '@tanstack/react-query'
 import { MapPin, Search } from 'lucide-react'
 import { sitesApi } from '../api/endpoints'
 import Table from '../components/ui/Table'
-import PageHeader from '../components/ui/PageHeader'
-
 
 interface Site {
   id: string; siteCode: string; name: string; city: string; country: string
@@ -34,57 +32,70 @@ export default function Sites() {
   )
 
   return (
-    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
-      <div className="px-8 pt-8 pb-10 space-y-4">
-        <PageHeader title="Sites" subtitle="Global research site network" action={
-          <span className="text-sm text-slate-500">{sites.length} sites</span>
-        } />
+    <div className="p-6 space-y-5" style={{ background: 'var(--color-background)' }}>
 
-      {/* Country Overview */}
-      <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
-        <div className="flex items-center gap-2 mb-3">
-          <MapPin size={16} className="text-slate-500" />
-          <span className="text-sm font-semibold text-slate-700">Active Countries</span>
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-[18px] font-bold text-gray-900">Sites</h2>
+          <p className="text-[13px] text-gray-500 mt-0.5">Global research site network</p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+          <MapPin size={13} className="text-gray-400" />
+          {sites.length} {sites.length === 1 ? 'site' : 'sites'}
+        </div>
+      </div>
+
+      {/* Country overview */}
+      <div
+        className="bg-white rounded-xl p-4"
+        style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
+      >
+        <div className="flex items-center gap-2 mb-3">
+          <MapPin size={14} className="text-gray-400" />
+          <span className="text-[13px] font-semibold text-gray-700">Active Countries</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
           {countryDots.map(({ country, color }) => (
-            <div key={country} className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg">
-              <div className={`w-2.5 h-2.5 rounded-full ${color}`} />
-              <span className="text-sm text-slate-700">{country}</span>
+            <div key={country} className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg" style={{ border: '1px solid var(--color-border)' }}>
+              <div className={`w-2 h-2 rounded-full ${color}`} />
+              <span className="text-[13px] text-gray-700">{country}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Search */}
-      <div className="relative mb-5">
-        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+      <div className="relative min-w-[220px] max-w-sm">
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
         <input
-          value={search} onChange={e => setSearch(e.target.value)}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
           placeholder="Search by name, city or country…"
-          className="w-full max-w-sm pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full pl-9 pr-4 py-2.5 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
         />
       </div>
 
+      {/* Table */}
       {isLoading ? (
-        <div className="flex justify-center py-20">
-          <div className="animate-spin rounded-full border-2 border-blue-600 border-t-transparent w-8 h-8" />
+        <div className="flex items-center justify-center py-16">
+          <div className="animate-spin rounded-full border-2 border-blue-600 border-t-transparent w-6 h-6" />
         </div>
       ) : (
         <Table<Site>
           columns={[
-            { header: 'Code', cell: s => <span className="font-mono text-xs text-slate-600">{s.siteCode}</span>, width: '110px' },
-            { header: 'Site Name', cell: s => <span className="font-medium text-slate-800">{s.name}</span> },
-            { header: 'City', cell: s => s.city },
-            { header: 'Country', cell: s => s.country },
-            { header: 'Principal Investigator', cell: s => s.principalInvestigator ?? '—' },
-            { header: 'Contact', cell: s => s.contactEmail ? <a href={`mailto:${s.contactEmail}`} className="text-blue-600 hover:underline text-xs">{s.contactEmail}</a> : '—' },
-            { header: 'Enrollments', cell: s => <span className="font-semibold text-slate-700">{s._count?.enrollments ?? 0}</span> },
+            { header: 'Code', width: '110px', cell: s => <span className="font-mono text-xs text-gray-500">{s.siteCode}</span> },
+            { header: 'Site Name', cell: s => <span className="font-medium text-gray-800">{s.name}</span> },
+            { header: 'City', cell: s => <span className="text-gray-600">{s.city}</span> },
+            { header: 'Country', cell: s => <span className="text-gray-600">{s.country}</span> },
+            { header: 'Principal Investigator', cell: s => <span className="text-gray-600">{s.principalInvestigator ?? '—'}</span> },
+            { header: 'Contact', cell: s => s.contactEmail ? <a href={`mailto:${s.contactEmail}`} className="text-blue-600 hover:underline text-xs">{s.contactEmail}</a> : <span className="text-gray-400 text-xs">—</span> },
+            { header: 'Enrollments', cell: s => <span className="font-semibold text-gray-700">{s._count?.enrollments ?? 0}</span> },
           ]}
           data={sites}
+          emptyMessage="No sites match your search."
         />
       )}
-      </div>
     </div>
   )
 }

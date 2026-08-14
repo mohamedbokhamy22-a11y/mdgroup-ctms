@@ -1,22 +1,18 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { CalendarCheck } from 'lucide-react'
 
 import { visitsApi } from '../api/endpoints'
 import Badge from '../components/ui/Badge'
 import Table from '../components/ui/Table'
-import PageHeader from '../components/ui/PageHeader'
-
-// ── types ──────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Visit = Record<string, any>
 
-// ── helpers ────────────────────────────────────────────────────────────────
-
 function Spinner() {
   return (
-    <div className="flex justify-center py-20">
-      <div className="animate-spin rounded-full border-2 border-blue-600 border-t-transparent w-8 h-8" />
+    <div className="flex items-center justify-center py-16">
+      <div className="animate-spin rounded-full border-2 border-blue-600 border-t-transparent w-6 h-6" />
     </div>
   )
 }
@@ -26,8 +22,6 @@ const fmt = (d: string) =>
 
 const STATUS_OPTIONS = ['All', 'SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'MISSED', 'CANCELLED']
 const TYPE_OPTIONS   = ['All', 'SITE_BASED', 'HOME_VISIT', 'TELEHEALTH', 'REMOTE_MONITORING']
-
-// ── component ──────────────────────────────────────────────────────────────
 
 export default function Visits() {
   const [statusFilter, setStatusFilter] = useState<string>('All')
@@ -50,29 +44,29 @@ export default function Visits() {
     {
       header: 'Visit Name',
       cell:   (v: Visit) => (
-        <span className="font-medium text-slate-800">{v.name ?? v.visitName ?? '—'}</span>
+        <span className="font-medium text-gray-800">{v.name ?? v.visitName ?? '—'}</span>
       ),
     },
     {
       header: 'Type',
       width:  '160px',
       cell:   (v: Visit) =>
-        v.visitType ? <Badge value={v.visitType} /> : <span className="text-slate-400 text-xs">—</span>,
+        v.visitType ? <Badge value={v.visitType} /> : <span className="text-gray-400 text-xs">—</span>,
     },
     {
       header: 'Status',
       width:  '130px',
       cell:   (v: Visit) =>
-        v.status ? <Badge value={v.status} /> : <span className="text-slate-400 text-xs">—</span>,
+        v.status ? <Badge value={v.status} /> : <span className="text-gray-400 text-xs">—</span>,
     },
     {
       header: 'Scheduled Date',
       width:  '150px',
       cell:   (v: Visit) =>
         v.scheduledDate ? (
-          <span className="text-slate-600 text-sm">{fmt(v.scheduledDate)}</span>
+          <span className="text-gray-600">{fmt(v.scheduledDate)}</span>
         ) : (
-          <span className="text-slate-400 text-xs">—</span>
+          <span className="text-gray-400 text-xs">—</span>
         ),
     },
     {
@@ -80,80 +74,80 @@ export default function Visits() {
       cell:   (v: Visit) => {
         const p = v.enrollment?.participant
         return p ? (
-          <span className="text-slate-700">{p.firstName} {p.lastName}</span>
+          <span className="text-gray-700">{p.firstName} {p.lastName}</span>
         ) : (
-          <span className="text-slate-400 text-xs">—</span>
+          <span className="text-gray-400 text-xs">—</span>
         )
       },
     },
     {
       header: 'Site',
-      cell:   (v: Visit) => (
-        <span className="text-slate-600 text-sm">{v.site?.name ?? '—'}</span>
-      ),
+      cell:   (v: Visit) => <span className="text-gray-600">{v.site?.name ?? '—'}</span>,
     },
     {
       header: 'Duration',
       width:  '100px',
       cell:   (v: Visit) =>
         v.duration != null ? (
-          <span className="text-slate-600 text-sm">{v.duration} min</span>
+          <span className="text-gray-600">{v.duration} min</span>
         ) : (
-          <span className="text-slate-400 text-xs">—</span>
+          <span className="text-gray-400 text-xs">—</span>
         ),
     },
   ]
 
   return (
-    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
-      <div className="px-8 pt-8 pb-10 space-y-4">
-        <PageHeader
-          title="Visits"
-          subtitle="Scheduled and completed trial visits"
-          action={
-            <span className="text-sm text-slate-500">
-              {filtered.length} visit{filtered.length !== 1 ? 's' : ''}
-            </span>
-          }
-        />
-        {/* ── filters ── */}
-        <div className="flex flex-wrap items-center gap-3">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="py-2 pl-3 pr-8 text-sm border border-slate-200 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700"
-          >
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s === 'All' ? 'All Statuses' : s.replace(/_/g, ' ')}
-              </option>
-            ))}
-          </select>
+    <div className="p-6 space-y-5" style={{ background: 'var(--color-background)' }}>
 
-          <select
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
-            className="py-2 pl-3 pr-8 text-sm border border-slate-200 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700"
-          >
-            {TYPE_OPTIONS.map((t) => (
-              <option key={t} value={t}>
-                {t === 'All' ? 'All Types' : t.replace(/_/g, ' ')}
-              </option>
-            ))}
-          </select>
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-[18px] font-bold text-gray-900">Visits</h2>
+          <p className="text-[13px] text-gray-500 mt-0.5">Scheduled and completed trial visits</p>
         </div>
-
-        {/* ── table ── */}
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <Table<Visit>
-            columns={columns}
-            data={filtered}
-            emptyMessage="No visits match your filters."
-          />
-        )}
+        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+          <CalendarCheck size={13} className="text-gray-400" />
+          {filtered.length} {filtered.length === 1 ? 'visit' : 'visits'}
+        </div>
       </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-3">
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="py-2.5 pl-3 pr-8 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+        >
+          {STATUS_OPTIONS.map((s) => (
+            <option key={s} value={s}>
+              {s === 'All' ? 'All Statuses' : s.replace(/_/g, ' ')}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+          className="py-2.5 pl-3 pr-8 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+        >
+          {TYPE_OPTIONS.map((t) => (
+            <option key={t} value={t}>
+              {t === 'All' ? 'All Types' : t.replace(/_/g, ' ')}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Table */}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Table<Visit>
+          columns={columns}
+          data={filtered}
+          emptyMessage="No visits match your filters."
+        />
+      )}
     </div>
   )
 }

@@ -5,14 +5,9 @@ import { ArrowLeft, FlaskConical, Users, Calendar } from 'lucide-react'
 import { studiesApi, enrollmentsApi } from '../api/endpoints'
 import Badge from '../components/ui/Badge'
 import Table from '../components/ui/Table'
-import PageHeader from '../components/ui/PageHeader'
-
-// ── types ──────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Enrollment = Record<string, any>
-
-// ── helpers ────────────────────────────────────────────────────────────────
 
 function Spinner() {
   return (
@@ -24,31 +19,17 @@ function Spinner() {
 
 function formatDate(value: string | null | undefined): string {
   if (!value) return '—'
-  return new Date(value).toLocaleDateString('en-GB', {
-    day:   '2-digit',
-    month: 'short',
-    year:  'numeric',
-  })
+  return new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
-// ── info grid item ──────────────────────────────────────────────────────────
-
-function InfoItem({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}) {
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="space-y-1">
-      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{label}</p>
-      <div className="text-sm text-slate-800">{children}</div>
+    <div>
+      <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">{label}</p>
+      <div className="text-[13.5px] text-gray-800 font-medium leading-snug">{children}</div>
     </div>
   )
 }
-
-// ── component ──────────────────────────────────────────────────────────────
 
 export default function StudyDetail() {
   const { id } = useParams<{ id: string }>()
@@ -72,174 +53,151 @@ export default function StudyDetail() {
       header: 'Subject #',
       width:  '120px',
       cell:   (e: Enrollment) => (
-        <span className="font-mono text-xs text-slate-600">
-          {e.subjectNumber ?? e.subjectId ?? '—'}
-        </span>
+        <span className="font-mono text-xs text-gray-600">{e.subjectNumber ?? e.subjectId ?? '—'}</span>
       ),
     },
     {
       header: 'Participant',
       cell:   (e: Enrollment) => {
         const p = e.participant
-        if (!p) return <span className="text-slate-400">—</span>
-        return (
-          <span className="text-slate-800">
-            {[p.firstName, p.lastName].filter(Boolean).join(' ') || '—'}
-          </span>
-        )
+        if (!p) return <span className="text-gray-400">—</span>
+        return <span className="text-gray-800">{[p.firstName, p.lastName].filter(Boolean).join(' ') || '—'}</span>
       },
     },
     {
       header: 'Site',
       width:  '160px',
-      cell:   (e: Enrollment) => (
-        <span className="text-slate-600 text-sm">{e.site?.name ?? '—'}</span>
-      ),
+      cell:   (e: Enrollment) => <span className="text-gray-600">{e.site?.name ?? '—'}</span>,
     },
     {
       header: 'Status',
       width:  '130px',
-      cell:   (e: Enrollment) =>
-        e.status ? (
-          <Badge value={e.status} />
-        ) : (
-          <span className="text-slate-400 text-xs">—</span>
-        ),
+      cell:   (e: Enrollment) => e.status ? <Badge value={e.status} /> : <span className="text-gray-400 text-xs">—</span>,
     },
     {
-      header: 'Enrolled Date',
+      header: 'Enrolled',
       width:  '140px',
       cell:   (e: Enrollment) => (
-        <span className="text-slate-600 text-sm">
-          {formatDate(e.enrollmentDate ?? e.createdAt)}
-        </span>
+        <span className="text-gray-600">{formatDate(e.enrollmentDate ?? e.createdAt)}</span>
       ),
     },
   ]
 
-  if (studyLoading) {
-    return (
-      <div className="min-h-screen bg-slate-100">
-        <Spinner />
-      </div>
-    )
-  }
+  if (studyLoading) return <Spinner />
 
   if (!study) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-        <p className="text-slate-400">Study not found.</p>
+      <div className="flex items-center justify-center py-20 text-gray-400">
+        <p className="text-[14px]">Study not found.</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      {/* ── back link ── */}
-      <div className="px-8 pt-6">
-        <Link
-          to="/studies"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-600 transition-colors"
+    <div className="p-6 space-y-5" style={{ background: 'var(--color-background)' }}>
+
+      {/* Back link */}
+      <Link
+        to="/studies"
+        className="inline-flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-gray-800 transition-colors"
+      >
+        <ArrowLeft size={14} />
+        Back to Studies
+      </Link>
+
+      {/* Page header */}
+      <div className="flex items-start gap-4">
+        <div
+          className="flex items-center justify-center w-12 h-12 rounded-xl shrink-0"
+          style={{ background: 'var(--color-primary)' }}
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Studies
-        </Link>
+          <FlaskConical size={20} className="text-white" />
+        </div>
+        <div>
+          <h2 className="text-[20px] font-bold text-gray-900 leading-tight">{study.title ?? 'Untitled Study'}</h2>
+          {study.protocolNumber && (
+            <p className="text-[13px] font-mono text-gray-400 mt-0.5">{study.protocolNumber}</p>
+          )}
+        </div>
       </div>
 
-      <PageHeader
-        title={study.title ?? 'Untitled Study'}
-        subtitle={study.protocolNumber ?? ''}
-      />
+      {/* Detail fields */}
+      <div
+        className="bg-white rounded-xl p-6"
+        style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
+      >
+        <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-5">Study Details</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+          <Field label="Phase">
+            {study.phase ? <Badge value={study.phase} /> : '—'}
+          </Field>
 
-      <div className="px-8 pb-10 space-y-8">
+          <Field label="Status">
+            {study.status ? <Badge value={study.status} /> : '—'}
+          </Field>
 
-        {/* ── info grid ── */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-5">
-            <FlaskConical className="w-4 h-4 text-blue-600" />
-            <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">
-              Study Details
-            </h2>
-          </div>
+          <Field label="Sponsor">
+            {study.sponsor?.name ?? study.sponsorName ?? '—'}
+          </Field>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5">
-            <InfoItem label="Phase">
-              {study.phase ? <Badge value={study.phase} /> : '—'}
-            </InfoItem>
+          <Field label="Indication">
+            {study.indication ?? '—'}
+          </Field>
 
-            <InfoItem label="Status">
-              {study.status ? <Badge value={study.status} /> : '—'}
-            </InfoItem>
+          <Field label="Therapeutic Area">
+            {study.therapeuticArea ?? '—'}
+          </Field>
 
-            <InfoItem label="Indication">
-              {study.indication ?? '—'}
-            </InfoItem>
+          <Field label="Target Enrollment">
+            {study.targetEnrollment != null ? `${study.targetEnrollment} participants` : '—'}
+          </Field>
 
-            <InfoItem label="Therapeutic Area">
-              {study.therapeuticArea ?? '—'}
-            </InfoItem>
+          <Field label="Start Date">
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar size={13} className="text-gray-400 shrink-0" />
+              {formatDate(study.startDate)}
+            </span>
+          </Field>
 
-            <InfoItem label="Sponsor">
-              {study.sponsor?.name ?? study.sponsorName ?? '—'}
-            </InfoItem>
-
-            <InfoItem label="Target Enrollment">
-              {study.targetEnrollment != null
-                ? `${study.targetEnrollment} participants`
-                : '—'}
-            </InfoItem>
-
-            <InfoItem label="Start Date">
-              <span className="inline-flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                {formatDate(study.startDate)}
-              </span>
-            </InfoItem>
-
-            <InfoItem label="End Date">
-              <span className="inline-flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                {formatDate(study.endDate)}
-              </span>
-            </InfoItem>
-          </div>
+          <Field label="End Date">
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar size={13} className="text-gray-400 shrink-0" />
+              {formatDate(study.endDate)}
+            </span>
+          </Field>
         </div>
+      </div>
 
-        {/* ── description ── */}
-        {study.description && (
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-            <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-3">
-              Description
-            </h2>
-            <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-              {study.description}
-            </p>
-          </div>
-        )}
+      {/* Description */}
+      {study.description && (
+        <div
+          className="bg-white rounded-xl p-6"
+          style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
+        >
+          <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Description</p>
+          <p className="text-[13.5px] text-gray-600 leading-relaxed whitespace-pre-line">{study.description}</p>
+        </div>
+      )}
 
-        {/* ── enrollments ── */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-blue-600" />
-            <h2 className="text-base font-semibold text-slate-800">Enrollments</h2>
-            {!enrollmentsLoading && (
-              <span className="text-xs text-slate-400 font-normal">
-                ({enrollments.length})
-              </span>
-            )}
-          </div>
-
-          {enrollmentsLoading ? (
-            <Spinner />
-          ) : (
-            <Table<Enrollment>
-              columns={enrollmentColumns}
-              data={enrollments}
-              emptyMessage="No enrollments found for this study."
-            />
+      {/* Enrollments */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Users size={15} className="text-gray-400" />
+          <h3 className="text-[14px] font-semibold text-gray-800">Enrollments</h3>
+          {!enrollmentsLoading && (
+            <span className="text-[12px] text-gray-400">({enrollments.length})</span>
           )}
         </div>
 
+        {enrollmentsLoading ? (
+          <Spinner />
+        ) : (
+          <Table<Enrollment>
+            columns={enrollmentColumns}
+            data={enrollments}
+            emptyMessage="No enrollments found for this study."
+          />
+        )}
       </div>
     </div>
   )

@@ -5,7 +5,6 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
 import { studiesApi, participantsApi, visitsApi, paymentsApi, adverseEventsApi, enrollmentsApi } from '../api/endpoints'
-import PageHeader from '../components/ui/PageHeader'
 import { Download, TrendingUp, Users, DollarSign, AlertTriangle, CalendarCheck } from 'lucide-react'
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']
@@ -112,14 +111,14 @@ export default function Reports() {
   }
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-6 space-y-5" style={{ background: 'var(--color-background)' }}>
       <div className="flex items-center justify-between">
-        <PageHeader
-          title="Reports"
-          subtitle="Central reporting platform — aggregated data from all modules"
-        />
+        <div>
+          <h2 className="text-[18px] font-bold text-gray-900">Reports</h2>
+          <p className="text-[13px] text-gray-500 mt-0.5">Central reporting — aggregated data from all modules</p>
+        </div>
         <div className="flex items-center gap-2">
-          {exportMsg && <span className="text-xs text-emerald-600 font-medium">{exportMsg}</span>}
+          {exportMsg && <span className="text-[12px] text-emerald-600 font-medium">{exportMsg}</span>}
         </div>
       </div>
 

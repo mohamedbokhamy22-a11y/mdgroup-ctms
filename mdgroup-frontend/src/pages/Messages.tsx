@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { MessageSquare } from 'lucide-react'
 
 import { messagesApi } from '../api/endpoints'
-import PageHeader from '../components/ui/PageHeader'
-
-// ── types ──────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Message = Record<string, any>
@@ -18,12 +16,10 @@ interface ParticipantThread {
   lastMessageAt: string
 }
 
-// ── helpers ────────────────────────────────────────────────────────────────
-
 function Spinner() {
   return (
-    <div className="flex justify-center py-20">
-      <div className="animate-spin rounded-full border-2 border-blue-600 border-t-transparent w-8 h-8" />
+    <div className="flex items-center justify-center py-16">
+      <div className="animate-spin rounded-full border-2 border-blue-600 border-t-transparent w-6 h-6" />
     </div>
   )
 }
@@ -56,11 +52,9 @@ function getSenderLabel(msg: Message): string {
 
 function groupByParticipant(messages: Message[]): ParticipantThread[] {
   const map = new Map<string, Message[]>()
-
   for (const msg of messages) {
     const pid = msg.participantId ?? msg.participant?.id ?? 'unknown'
-    const existing = map.get(pid) ?? []
-    map.set(pid, [...existing, msg])
+    map.set(pid, [...(map.get(pid) ?? []), msg])
   }
 
   const threads: ParticipantThread[] = []
@@ -84,11 +78,9 @@ function groupByParticipant(messages: Message[]): ParticipantThread[] {
   )
 }
 
-// ── component ──────────────────────────────────────────────────────────────
-
 export default function Messages() {
-  const queryClient                               = useQueryClient()
-  const [selectedPid, setSelectedPid]            = useState<string | null>(null)
+  const queryClient                    = useQueryClient()
+  const [selectedPid, setSelectedPid] = useState<string | null>(null)
 
   const { data, isLoading } = useQuery({
     queryKey: ['messages'],
@@ -104,81 +96,81 @@ export default function Messages() {
 
   const allMessages: Message[] = data?.data ?? []
   const threads: ParticipantThread[] = groupByParticipant(allMessages)
-
-  const selectedThread: ParticipantThread | undefined = threads.find(
-    (t) => t.participantId === selectedPid
-  )
+  const selectedThread = threads.find((t) => t.participantId === selectedPid)
 
   function handleMarkAllRead() {
     if (!selectedThread) return
-    const unreadIds: string[] = selectedThread.messages
+    const unreadIds = selectedThread.messages
       .filter((m) => m.isRead === false && m.id)
       .map((m) => m.id as string)
-    if (unreadIds.length > 0) {
-      markReadMutation.mutate(unreadIds)
-    }
+    if (unreadIds.length > 0) markReadMutation.mutate(unreadIds)
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col">
-      <div className="px-8 pt-8 pb-10 flex flex-col flex-1 min-h-0 gap-4">
-        <PageHeader
-          title="Messages"
-          subtitle="Patient communication center"
-          action={
-            <span className="text-sm text-slate-500">
-              {threads.length} conversation{threads.length !== 1 ? 's' : ''}
-            </span>
-          }
-        />
+    <div className="p-6 space-y-5 flex flex-col" style={{ background: 'var(--color-background)', minHeight: '100%' }}>
 
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <div className="flex gap-4 flex-1 min-h-0">
-            {/* ── left panel: participant list ── */}
-          <div className="w-1/3 bg-white rounded-xl border border-slate-200 overflow-hidden flex flex-col">
-            <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Participants
-              </span>
+      {/* Page header */}
+      <div className="flex items-center justify-between shrink-0">
+        <div>
+          <h2 className="text-[18px] font-bold text-gray-900">Messages</h2>
+          <p className="text-[13px] text-gray-500 mt-0.5">Patient communication center</p>
+        </div>
+        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+          <MessageSquare size={13} className="text-gray-400" />
+          {threads.length} {threads.length === 1 ? 'conversation' : 'conversations'}
+        </div>
+      </div>
+
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="flex gap-4 flex-1 min-h-0" style={{ height: 'calc(100vh - 180px)' }}>
+          {/* Left: participant list */}
+          <div
+            className="w-80 shrink-0 bg-white rounded-xl overflow-hidden flex flex-col"
+            style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
+          >
+            <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--color-border)', background: '#F9FAFB' }}>
+              <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Participants</span>
             </div>
 
             {threads.length === 0 ? (
-              <div className="flex-1 flex items-center justify-center text-slate-400 text-sm">
+              <div className="flex-1 flex items-center justify-center text-gray-400 text-[13px]">
                 No messages yet
               </div>
             ) : (
-              <ul className="flex-1 overflow-y-auto divide-y divide-slate-100">
+              <ul className="flex-1 overflow-y-auto divide-y divide-gray-100">
                 {threads.map((thread) => (
                   <li
                     key={thread.participantId}
                     onClick={() => setSelectedPid(thread.participantId)}
                     className={`px-4 py-3 cursor-pointer transition-colors flex items-start gap-3 ${
                       selectedPid === thread.participantId
-                        ? 'bg-blue-50 border-l-2 border-l-blue-500'
-                        : 'hover:bg-slate-50 border-l-2 border-l-transparent'
+                        ? 'bg-blue-50 border-l-2 border-l-blue-600'
+                        : 'hover:bg-gray-50 border-l-2 border-l-transparent'
                     }`}
                   >
-                    {/* avatar */}
-                    <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold shrink-0">
+                    <div
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-semibold text-white shrink-0"
+                      style={{ background: 'var(--color-primary-mid)' }}
+                    >
                       {thread.participantName.charAt(0).toUpperCase()}
                     </div>
-
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-slate-800 truncate">
-                          {thread.participantName}
-                        </span>
+                        <span className="text-[13px] font-medium text-gray-800 truncate">{thread.participantName}</span>
                         {thread.unreadCount > 0 && (
-                          <span className="ml-2 shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-white text-xs font-bold">
+                          <span
+                            className="ml-2 shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full text-white text-[11px] font-bold"
+                            style={{ background: 'var(--color-primary)' }}
+                          >
                             {thread.unreadCount}
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-400 truncate mt-0.5">{thread.lastMessage}</p>
+                      <p className="text-[12px] text-gray-400 truncate mt-0.5">{thread.lastMessage}</p>
                       {thread.lastMessageAt && (
-                        <p className="text-xs text-slate-400 mt-0.5">{fmt(thread.lastMessageAt)}</p>
+                        <p className="text-[11px] text-gray-400 mt-0.5">{fmt(thread.lastMessageAt)}</p>
                       )}
                     </div>
                   </li>
@@ -187,19 +179,21 @@ export default function Messages() {
             )}
           </div>
 
-          {/* ── right panel: message thread ── */}
-          <div className="w-2/3 bg-white rounded-xl border border-slate-200 flex flex-col overflow-hidden">
+          {/* Right: message thread */}
+          <div
+            className="flex-1 bg-white rounded-xl flex flex-col overflow-hidden"
+            style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
+          >
             {!selectedThread ? (
-              <div className="flex-1 flex items-center justify-center text-slate-400 text-sm">
+              <div className="flex-1 flex items-center justify-center text-gray-400 text-[13px]">
                 Select a participant to view messages
               </div>
             ) : (
               <>
-                {/* thread header */}
-                <div className="px-5 py-3 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <div className="px-5 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid var(--color-border)', background: '#F9FAFB' }}>
                   <div>
-                    <span className="font-semibold text-slate-800">{selectedThread.participantName}</span>
-                    <span className="ml-2 text-xs text-slate-400">
+                    <span className="font-semibold text-gray-800 text-[14px]">{selectedThread.participantName}</span>
+                    <span className="ml-2 text-[12px] text-gray-400">
                       {selectedThread.messages.length} message{selectedThread.messages.length !== 1 ? 's' : ''}
                     </span>
                   </div>
@@ -207,18 +201,17 @@ export default function Messages() {
                     <button
                       onClick={handleMarkAllRead}
                       disabled={markReadMutation.isPending}
-                      className="text-xs text-blue-600 hover:text-blue-800 font-medium disabled:opacity-50 transition-colors"
+                      className="text-[12px] font-medium disabled:opacity-50 transition-colors cursor-pointer hover:opacity-70"
+                      style={{ color: 'var(--color-primary)' }}
                     >
-                      Mark all as read ({selectedThread.unreadCount})
+                      Mark all read ({selectedThread.unreadCount})
                     </button>
                   )}
                 </div>
 
-                {/* messages */}
                 <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3">
                   {selectedThread.messages.map((msg, i) => {
-                    const isOutbound =
-                      msg.direction === 'OUTBOUND' || msg.messageType === 'OUTBOUND'
+                    const isOutbound = msg.direction === 'OUTBOUND' || msg.messageType === 'OUTBOUND'
                     const body: string = msg.body ?? msg.content ?? ''
                     const sender: string = getSenderLabel(msg)
                     const timestamp: string = msg.createdAt ?? ''
@@ -232,26 +225,23 @@ export default function Messages() {
                         <div
                           className={`max-w-xs lg:max-w-sm xl:max-w-md rounded-2xl px-4 py-2.5 ${
                             isOutbound
-                              ? 'bg-blue-600 text-white rounded-br-sm'
-                              : 'bg-white border border-slate-200 text-slate-800 rounded-bl-sm'
+                              ? 'text-white rounded-br-sm'
+                              : 'bg-gray-50 text-gray-800 rounded-bl-sm'
                           } ${isUnread && !isOutbound ? 'ring-2 ring-blue-200' : ''}`}
+                          style={isOutbound ? { background: 'var(--color-primary)' } : { border: '1px solid var(--color-border)' }}
                         >
-                          <p className="text-sm leading-relaxed">{body}</p>
+                          <p className="text-[13px] leading-relaxed">{body}</p>
                         </div>
                         <div className={`flex items-center gap-1.5 mt-1 ${isOutbound ? 'flex-row-reverse' : ''}`}>
-                          <span className={`text-xs font-medium ${isOutbound ? 'text-slate-500' : 'text-slate-500'}`}>
-                            {sender}
-                          </span>
+                          <span className="text-[11px] font-medium text-gray-500">{sender}</span>
                           {timestamp && (
                             <>
-                              <span className="text-slate-300 text-xs">·</span>
-                              <span className="text-xs text-slate-400">
-                                {fmt(timestamp)} {fmtTime(timestamp)}
-                              </span>
+                              <span className="text-gray-300 text-[11px]">·</span>
+                              <span className="text-[11px] text-gray-400">{fmt(timestamp)} {fmtTime(timestamp)}</span>
                             </>
                           )}
                           {isUnread && !isOutbound && (
-                            <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" title="Unread" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
                           )}
                         </div>
                       </div>
@@ -261,9 +251,8 @@ export default function Messages() {
               </>
             )}
           </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

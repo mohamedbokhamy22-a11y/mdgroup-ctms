@@ -1,18 +1,13 @@
 import { useParams, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft, Users, Calendar, MapPin } from 'lucide-react'
+import { ArrowLeft, Users, Calendar, MapPin, Mail, Phone, AlertCircle } from 'lucide-react'
 
 import { participantsApi, enrollmentsApi } from '../api/endpoints'
 import Badge from '../components/ui/Badge'
 import Table from '../components/ui/Table'
-import PageHeader from '../components/ui/PageHeader'
-
-// ── types ──────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Enrollment = Record<string, any>
-
-// ── helpers ────────────────────────────────────────────────────────────────
 
 function Spinner() {
   return (
@@ -24,31 +19,17 @@ function Spinner() {
 
 function formatDate(value: string | null | undefined): string {
   if (!value) return '—'
-  return new Date(value).toLocaleDateString('en-GB', {
-    day:   '2-digit',
-    month: 'short',
-    year:  'numeric',
-  })
+  return new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
-// ── info card ───────────────────────────────────────────────────────────────
-
-function InfoCard({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}) {
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-1">
-      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{label}</p>
-      <div className="text-sm text-slate-800 font-medium">{children}</div>
+    <div>
+      <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">{label}</p>
+      <div className="text-[13.5px] text-gray-800 font-medium leading-snug">{children}</div>
     </div>
   )
 }
-
-// ── component ──────────────────────────────────────────────────────────────
 
 export default function ParticipantDetail() {
   const { id } = useParams<{ id: string }>()
@@ -67,68 +48,43 @@ export default function ParticipantDetail() {
 
   const enrollments: Enrollment[] = enrollmentsData?.data ?? []
 
-  // message count from participant record if included
-  const messageCount: number | null =
-    participant?._count?.messages ?? participant?.messages?.length ?? null
-
   const enrollmentColumns = [
     {
       header: 'Study',
       cell:   (e: Enrollment) => (
-        <span className="text-slate-800 font-medium">
-          {e.study?.title ?? e.studyId ?? '—'}
-        </span>
+        <span className="text-gray-800 font-medium">{e.study?.title ?? e.studyId ?? '—'}</span>
       ),
     },
     {
       header: 'Site',
       width:  '160px',
-      cell:   (e: Enrollment) => (
-        <span className="text-slate-600 text-sm">{e.site?.name ?? '—'}</span>
-      ),
+      cell:   (e: Enrollment) => <span className="text-gray-600">{e.site?.name ?? '—'}</span>,
     },
     {
       header: 'Status',
       width:  '130px',
-      cell:   (e: Enrollment) =>
-        e.status ? (
-          <Badge value={e.status} />
-        ) : (
-          <span className="text-slate-400 text-xs">—</span>
-        ),
+      cell:   (e: Enrollment) => e.status ? <Badge value={e.status} /> : <span className="text-gray-400 text-xs">—</span>,
     },
     {
       header: 'Subject #',
       width:  '120px',
       cell:   (e: Enrollment) => (
-        <span className="font-mono text-xs text-slate-600">
-          {e.subjectNumber ?? e.subjectId ?? '—'}
-        </span>
+        <span className="font-mono text-xs text-gray-600">{e.subjectNumber ?? e.subjectId ?? '—'}</span>
       ),
     },
     {
-      header: 'Enrollment Date',
-      width:  '150px',
-      cell:   (e: Enrollment) => (
-        <span className="text-slate-600 text-sm">
-          {formatDate(e.enrollmentDate ?? e.createdAt)}
-        </span>
-      ),
+      header: 'Enrolled',
+      width:  '140px',
+      cell:   (e: Enrollment) => <span className="text-gray-600">{formatDate(e.enrollmentDate ?? e.createdAt)}</span>,
     },
   ]
 
-  if (participantLoading) {
-    return (
-      <div className="min-h-screen bg-slate-100">
-        <Spinner />
-      </div>
-    )
-  }
+  if (participantLoading) return <Spinner />
 
   if (!participant) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-        <p className="text-slate-400">Participant not found.</p>
+      <div className="flex items-center justify-center py-20 text-gray-400">
+        <p className="text-[14px]">Participant not found.</p>
       </div>
     )
   }
@@ -147,112 +103,113 @@ export default function ParticipantDetail() {
       : null
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      {/* ── back link ── */}
-      <div className="px-8 pt-6">
-        <Link
-          to="/participants"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-600 transition-colors"
+    <div className="p-6 space-y-5" style={{ background: 'var(--color-background)' }}>
+
+      {/* Back link */}
+      <Link
+        to="/participants"
+        className="inline-flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-gray-800 transition-colors"
+      >
+        <ArrowLeft size={14} />
+        Back to Participants
+      </Link>
+
+      {/* Page header */}
+      <div className="flex items-start gap-4">
+        <div
+          className="flex items-center justify-center w-12 h-12 rounded-xl text-[16px] font-bold text-white shrink-0"
+          style={{ background: 'var(--color-primary)' }}
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Participants
-        </Link>
+          {(participant.firstName?.[0] ?? '') + (participant.lastName?.[0] ?? '')}
+        </div>
+        <div>
+          <h2 className="text-[20px] font-bold text-gray-900 leading-tight">{fullName}</h2>
+          {participant.externalRef && (
+            <p className="text-[13px] font-mono text-gray-400 mt-0.5">{participant.externalRef}</p>
+          )}
+        </div>
       </div>
 
-      <PageHeader
-        title={fullName}
-        subtitle={participant.externalRef ?? ''}
-      />
-
-      <div className="px-8 pb-10 space-y-8">
-
-        {/* ── info cards ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <InfoCard label="Date of Birth">
+      {/* Detail fields */}
+      <div
+        className="bg-white rounded-xl p-6"
+        style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
+      >
+        <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-5">Personal Information</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+          <Field label="Date of Birth">
             <span className="inline-flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-slate-400" />
+              <Calendar size={13} className="text-gray-400 shrink-0" />
               {formatDate(participant.dateOfBirth ?? participant.dob)}
             </span>
-          </InfoCard>
+          </Field>
 
-          <InfoCard label="Country">
+          <Field label="Country">
             <span className="inline-flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-slate-400" />
+              <MapPin size={13} className="text-gray-400 shrink-0" />
               {participant.country ?? '—'}
             </span>
-          </InfoCard>
+          </Field>
 
-          <InfoCard label="Language">
+          <Field label="Language">
             {participant.preferredLanguage ?? participant.language ?? '—'}
-          </InfoCard>
+          </Field>
 
-          <InfoCard label="Phone">
-            {participant.phone ?? participant.phoneNumber ?? '—'}
-          </InfoCard>
+          <Field label="Phone">
+            <span className="inline-flex items-center gap-1.5">
+              <Phone size={13} className="text-gray-400 shrink-0" />
+              {participant.phone ?? participant.phoneNumber ?? '—'}
+            </span>
+          </Field>
 
-          <InfoCard label="Email">
+          <Field label="Email">
             {participant.email ? (
               <a
                 href={`mailto:${participant.email}`}
-                className="text-blue-600 hover:underline"
+                className="inline-flex items-center gap-1.5 text-blue-600 hover:underline"
               >
+                <Mail size={13} className="shrink-0" />
                 {participant.email}
               </a>
             ) : (
               '—'
             )}
-          </InfoCard>
+          </Field>
 
-          <InfoCard label="Requires Assistance">
-            {participant.requiresAssistance ? (
-              <Badge value="ACTIVE" />
-            ) : (
-              <span className="text-slate-500 font-normal">No</span>
-            )}
-          </InfoCard>
+          <Field label="Requires Assistance">
+            <span className="inline-flex items-center gap-1.5">
+              <AlertCircle size={13} className={participant.requiresAssistance ? 'text-red-500 shrink-0' : 'text-gray-300 shrink-0'} />
+              {participant.requiresAssistance ? 'Yes' : 'No'}
+            </span>
+          </Field>
 
-          <InfoCard label="Emergency Contact">
-            {emergencyDisplay ?? '—'}
-          </InfoCard>
+          {emergencyDisplay && (
+            <Field label="Emergency Contact">
+              <span className="text-gray-700">{emergencyDisplay}</span>
+            </Field>
+          )}
         </div>
+      </div>
 
-        {/* ── enrollments ── */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-blue-600" />
-            <h2 className="text-base font-semibold text-slate-800">Enrollments</h2>
-            {!enrollmentsLoading && (
-              <span className="text-xs text-slate-400 font-normal">
-                ({enrollments.length})
-              </span>
-            )}
-          </div>
-
-          {enrollmentsLoading ? (
-            <Spinner />
-          ) : (
-            <Table<Enrollment>
-              columns={enrollmentColumns}
-              data={enrollments}
-              emptyMessage="No enrollments found for this participant."
-            />
+      {/* Enrollments */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Users size={15} className="text-gray-400" />
+          <h3 className="text-[14px] font-semibold text-gray-800">Enrollments</h3>
+          {!enrollmentsLoading && (
+            <span className="text-[12px] text-gray-400">({enrollments.length})</span>
           )}
         </div>
 
-        {/* ── messages ── */}
-        {messageCount !== null && (
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-            <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">
-              Messages
-            </h2>
-            <p className="text-sm text-slate-600">
-              {messageCount === 0
-                ? 'No messages on record.'
-                : `${messageCount} message${messageCount !== 1 ? 's' : ''} on record.`}
-            </p>
-          </div>
+        {enrollmentsLoading ? (
+          <Spinner />
+        ) : (
+          <Table<Enrollment>
+            columns={enrollmentColumns}
+            data={enrollments}
+            emptyMessage="No enrollments found for this participant."
+          />
         )}
-
       </div>
     </div>
   )

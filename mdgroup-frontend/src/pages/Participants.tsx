@@ -5,14 +5,10 @@ import { Search, Users } from 'lucide-react'
 
 import { participantsApi } from '../api/endpoints'
 import Table from '../components/ui/Table'
-import PageHeader from '../components/ui/PageHeader'
-
-// ── types ──────────────────────────────────────────────────────────────────
+import Badge from '../components/ui/Badge'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Participant = Record<string, any>
-
-// ── helpers ────────────────────────────────────────────────────────────────
 
 function Spinner() {
   return (
@@ -21,8 +17,6 @@ function Spinner() {
     </div>
   )
 }
-
-// ── component ──────────────────────────────────────────────────────────────
 
 export default function Participants() {
   const navigate = useNavigate()
@@ -44,9 +38,7 @@ export default function Participants() {
       (p.firstName ?? '').toLowerCase().includes(q) ||
       (p.lastName ?? '').toLowerCase().includes(q) ||
       (p.externalRef ?? '').toLowerCase().includes(q)
-
     const matchesAssistance = !assistanceOnly || p.requiresAssistance === true
-
     return matchesSearch && matchesAssistance
   })
 
@@ -55,15 +47,13 @@ export default function Participants() {
       header: 'Ref',
       width:  '130px',
       cell:   (p: Participant) => (
-        <span className="font-mono text-xs text-slate-600">
-          {p.externalRef ?? '—'}
-        </span>
+        <span className="font-mono text-xs text-gray-500">{p.externalRef ?? '—'}</span>
       ),
     },
     {
       header: 'Name',
       cell:   (p: Participant) => (
-        <span className="text-slate-800 font-medium">
+        <span className="text-gray-800 font-medium">
           {[p.firstName, p.lastName].filter(Boolean).join(' ') || '—'}
         </span>
       ),
@@ -71,106 +61,89 @@ export default function Participants() {
     {
       header: 'Country',
       width:  '120px',
-      cell:   (p: Participant) => (
-        <span className="text-slate-600 text-sm">{p.country ?? '—'}</span>
-      ),
+      cell:   (p: Participant) => <span className="text-gray-600">{p.country ?? '—'}</span>,
     },
     {
       header: 'Language',
       width:  '110px',
-      cell:   (p: Participant) => (
-        <span className="text-slate-600 text-sm">{p.preferredLanguage ?? p.language ?? '—'}</span>
-      ),
+      cell:   (p: Participant) => <span className="text-gray-600">{p.preferredLanguage ?? p.language ?? '—'}</span>,
     },
     {
       header: 'Phone',
-      width:  '140px',
-      cell:   (p: Participant) => (
-        <span className="text-slate-600 text-sm">{p.phone ?? p.phoneNumber ?? '—'}</span>
-      ),
+      width:  '145px',
+      cell:   (p: Participant) => <span className="text-gray-600">{p.phone ?? p.phoneNumber ?? '—'}</span>,
     },
     {
       header: 'Enrollments',
-      width:  '100px',
+      width:  '110px',
       cell:   (p: Participant) => (
-        <span className="text-slate-700 font-medium text-sm">
-          {p._count?.enrollments ?? '—'}
-        </span>
+        <span className="font-semibold text-gray-700">{p._count?.enrollments ?? '—'}</span>
       ),
     },
     {
       header: 'Assistance',
-      width:  '100px',
+      width:  '110px',
       cell:   (p: Participant) =>
         p.requiresAssistance ? (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-red-100 text-red-700">
-            Yes
-          </span>
+          <Badge value="ACTIVE" />
         ) : (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600">
-            No
-          </span>
+          <span className="text-gray-400 text-[12px]">No</span>
         ),
     },
   ]
 
   return (
-    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
-      <div className="px-8 pt-8 pb-10 space-y-4">
-        <PageHeader
-          title="Participants"
-          subtitle="Patient records and enrollment tracking"
-          action={
-            <div className="flex items-center gap-2 text-sm text-slate-500">
-              <Users className="w-4 h-4" />
-              <span>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
-            </div>
-          }
-        />
-        {/* ── filters ── */}
-        <div className="flex flex-wrap items-center gap-3">
-          {/* search */}
-          <div className="relative flex-1 min-w-[220px] max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Search name or ref…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-400"
-            />
-          </div>
+    <div className="p-6 space-y-5" style={{ background: 'var(--color-background)' }}>
 
-          {/* assistance toggle */}
-          <button
-            onClick={() => setAssistance((v) => !v)}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
-              assistanceOnly
-                ? 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full ${
-                assistanceOnly ? 'bg-red-500' : 'bg-slate-300'
-              }`}
-            />
-            Requires Assistance
-          </button>
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-[18px] font-bold text-gray-900">Participants</h2>
+          <p className="text-[13px] text-gray-500 mt-0.5">Patient records and enrollment tracking</p>
+        </div>
+        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+          <Users size={13} className="text-gray-400" />
+          {filtered.length} {filtered.length === 1 ? 'participant' : 'participants'}
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-[220px] max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Search name or ref…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-2.5 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+          />
         </div>
 
-        {/* ── table ── */}
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <Table<Participant>
-            columns={columns}
-            data={filtered}
-            onRowClick={(p) => navigate(`/participants/${p.id}`)}
-            emptyMessage="No participants match your filters."
-          />
-        )}
+        <button
+          onClick={() => setAssistance((v) => !v)}
+          className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium border transition-colors cursor-pointer ${
+            assistanceOnly
+              ? 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100'
+              : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+          }`}
+        >
+          <span className={`w-2 h-2 rounded-full ${assistanceOnly ? 'bg-red-500' : 'bg-gray-300'}`} />
+          Requires Assistance
+        </button>
       </div>
+
+      {/* Table */}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Table<Participant>
+          columns={columns}
+          data={filtered}
+          onRowClick={(p) => navigate(`/participants/${p.id}`)}
+          emptyMessage="No participants match your filters."
+        />
+      )}
     </div>
   )
 }

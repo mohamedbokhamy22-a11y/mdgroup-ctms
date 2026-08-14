@@ -1,23 +1,18 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Check, X } from 'lucide-react'
+import { Check, X, CreditCard } from 'lucide-react'
 
 import { paymentsApi } from '../api/endpoints'
 import Badge from '../components/ui/Badge'
 import Table from '../components/ui/Table'
-import PageHeader from '../components/ui/PageHeader'
-
-// ── types ──────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Payment = Record<string, any>
 
-// ── helpers ────────────────────────────────────────────────────────────────
-
 function Spinner() {
   return (
-    <div className="flex justify-center py-20">
-      <div className="animate-spin rounded-full border-2 border-blue-600 border-t-transparent w-8 h-8" />
+    <div className="flex items-center justify-center py-16">
+      <div className="animate-spin rounded-full border-2 border-blue-600 border-t-transparent w-6 h-6" />
     </div>
   )
 }
@@ -26,14 +21,8 @@ const fmt = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 
 function formatAmount(amount: number, currency: string): string {
-  const symbols: Record<string, string> = {
-    USD: '$',
-    EUR: '€',
-    GBP: '£',
-    CHF: 'CHF',
-  }
-  const symbol = symbols[currency] ?? currency
-  return `${symbol} ${Number(amount).toFixed(2)}`
+  const symbols: Record<string, string> = { USD: '$', EUR: '€', GBP: '£', CHF: 'CHF' }
+  return `${symbols[currency] ?? currency} ${Number(amount).toFixed(2)}`
 }
 
 function truncate(str: string, max: number): string {
@@ -43,25 +32,23 @@ function truncate(str: string, max: number): string {
 const STATUS_OPTIONS = ['All', 'PENDING', 'APPROVED', 'PROCESSING', 'PAID', 'REJECTED']
 const TYPE_OPTIONS   = ['All', 'STIPEND', 'TRAVEL_REIMBURSEMENT', 'MEAL_ALLOWANCE', 'ACCOMMODATION', 'OTHER_EXPENSE']
 
-// ── summary card ───────────────────────────────────────────────────────────
-
 interface SummaryCardProps {
   label: string
   amount: number
-  currency?: string
   accent: string
 }
 
 function SummaryCard({ label, amount, accent }: SummaryCardProps) {
   return (
-    <div className={`bg-white rounded-xl border border-slate-200 p-4 flex flex-col gap-1 ${accent}`}>
-      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{label}</span>
-      <span className="text-2xl font-bold text-slate-800">$ {amount.toFixed(2)}</span>
+    <div
+      className={`bg-white rounded-xl p-4 flex flex-col gap-1 ${accent}`}
+      style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
+    >
+      <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{label}</span>
+      <span className="text-[22px] font-bold text-gray-800">$ {amount.toFixed(2)}</span>
     </div>
   )
 }
-
-// ── component ──────────────────────────────────────────────────────────────
 
 export default function Payments() {
   const queryClient                     = useQueryClient()
@@ -89,7 +76,6 @@ export default function Payments() {
     return matchesStatus && matchesType
   })
 
-  // Summary totals (across all payments, not just filtered)
   const totalPaid: number = allPayments
     .filter((p) => p.status === 'PAID')
     .reduce((sum: number, p) => sum + Number(p.amount ?? 0), 0)
@@ -108,26 +94,26 @@ export default function Payments() {
       cell:   (p: Payment) => {
         const participant = p.participant
         if (participant) {
-          return <span className="text-slate-800">{participant.firstName} {participant.lastName}</span>
+          return <span className="text-gray-800 font-medium">{participant.firstName} {participant.lastName}</span>
         }
         const createdBy = p.createdBy
         if (createdBy) {
-          return <span className="text-slate-800">{createdBy.firstName ?? ''} {createdBy.lastName ?? ''}</span>
+          return <span className="text-gray-800 font-medium">{createdBy.firstName ?? ''} {createdBy.lastName ?? ''}</span>
         }
-        return <span className="text-slate-400 text-xs">—</span>
+        return <span className="text-gray-400 text-xs">—</span>
       },
     },
     {
       header: 'Type',
-      width:  '170px',
+      width:  '175px',
       cell:   (p: Payment) =>
-        p.paymentType ? <Badge value={p.paymentType} /> : <span className="text-slate-400 text-xs">—</span>,
+        p.paymentType ? <Badge value={p.paymentType} /> : <span className="text-gray-400 text-xs">—</span>,
     },
     {
       header: 'Amount',
       width:  '120px',
       cell:   (p: Payment) => (
-        <span className="font-semibold text-slate-800 tabular-nums">
+        <span className="font-semibold text-gray-800 tabular-nums">
           {p.amount != null ? formatAmount(Number(p.amount), p.currency ?? 'USD') : '—'}
         </span>
       ),
@@ -136,12 +122,12 @@ export default function Payments() {
       header: 'Status',
       width:  '120px',
       cell:   (p: Payment) =>
-        p.status ? <Badge value={p.status} /> : <span className="text-slate-400 text-xs">—</span>,
+        p.status ? <Badge value={p.status} /> : <span className="text-gray-400 text-xs">—</span>,
     },
     {
       header: 'Description',
       cell:   (p: Payment) => (
-        <span className="text-slate-600 text-sm">{truncate(p.description ?? '', 40)}</span>
+        <span className="text-gray-600">{truncate(p.description ?? '', 40)}</span>
       ),
     },
     {
@@ -149,9 +135,9 @@ export default function Payments() {
       width:  '130px',
       cell:   (p: Payment) =>
         p.createdAt ? (
-          <span className="text-slate-500 text-sm">{fmt(p.createdAt)}</span>
+          <span className="text-gray-500">{fmt(p.createdAt)}</span>
         ) : (
-          <span className="text-slate-400 text-xs">—</span>
+          <span className="text-gray-400 text-xs">—</span>
         ),
     },
     {
@@ -159,28 +145,28 @@ export default function Payments() {
       width:  '90px',
       cell:   (p: Payment) => {
         if (p.status !== 'PENDING') return null
-        const isLoading = approveMutation.isPending && approveMutation.variables?.id === p.id
+        const pending = approveMutation.isPending && approveMutation.variables?.id === p.id
         return (
           <div className="flex items-center gap-1">
             <button
-              disabled={isLoading}
+              disabled={pending}
               onClick={(e) => {
                 e.stopPropagation()
                 approveMutation.mutate({ id: p.id, status: 'APPROVED' })
               }}
               title="Approve"
-              className="p-1.5 rounded-md text-green-600 hover:bg-green-50 disabled:opacity-40 transition-colors"
+              className="p-1.5 rounded-md text-green-600 hover:bg-green-50 disabled:opacity-40 transition-colors cursor-pointer"
             >
               <Check className="w-4 h-4" />
             </button>
             <button
-              disabled={isLoading}
+              disabled={pending}
               onClick={(e) => {
                 e.stopPropagation()
                 approveMutation.mutate({ id: p.id, status: 'REJECTED' })
               }}
               title="Reject"
-              className="p-1.5 rounded-md text-red-600 hover:bg-red-50 disabled:opacity-40 transition-colors"
+              className="p-1.5 rounded-md text-red-600 hover:bg-red-50 disabled:opacity-40 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -191,62 +177,60 @@ export default function Payments() {
   ]
 
   return (
-    <div className="min-h-screen" style={{ background: '#f1f5f9' }}>
-      <div className="px-8 pt-8 pb-10 space-y-6">
-        <PageHeader
-          title="Payments"
-          subtitle="Stipends, reimbursements and expense claims"
-          action={
-            <span className="text-sm text-slate-500">
-              {filtered.length} payment{filtered.length !== 1 ? 's' : ''}
-            </span>
-          }
-        />
-        {/* ── summary cards ── */}
-        <div className="grid grid-cols-3 gap-4">
-          <SummaryCard label="Total Paid"      amount={totalPaid}       accent="border-l-4 border-l-green-400" />
-          <SummaryCard label="Pending Amount"  amount={totalPending}    accent="border-l-4 border-l-yellow-400" />
-          <SummaryCard label="Processing"      amount={totalProcessing} accent="border-l-4 border-l-purple-400" />
+    <div className="p-6 space-y-5" style={{ background: 'var(--color-background)' }}>
+
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-[18px] font-bold text-gray-900">Payments</h2>
+          <p className="text-[13px] text-gray-500 mt-0.5">Stipends, reimbursements and expense claims</p>
         </div>
-
-        {/* ── filters ── */}
-        <div className="flex flex-wrap items-center gap-3">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="py-2 pl-3 pr-8 text-sm border border-slate-200 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700"
-          >
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s === 'All' ? 'All Statuses' : s.replace(/_/g, ' ')}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
-            className="py-2 pl-3 pr-8 text-sm border border-slate-200 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700"
-          >
-            {TYPE_OPTIONS.map((t) => (
-              <option key={t} value={t}>
-                {t === 'All' ? 'All Types' : t.replace(/_/g, ' ')}
-              </option>
-            ))}
-          </select>
+        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+          <CreditCard size={13} className="text-gray-400" />
+          {filtered.length} {filtered.length === 1 ? 'payment' : 'payments'}
         </div>
-
-        {/* ── table ── */}
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <Table<Payment>
-            columns={columns}
-            data={filtered}
-            emptyMessage="No payments match your filters."
-          />
-        )}
       </div>
+
+      {/* Summary cards */}
+      <div className="grid grid-cols-3 gap-4">
+        <SummaryCard label="Total Paid"     amount={totalPaid}       accent="border-l-4 border-l-green-400" />
+        <SummaryCard label="Pending Amount" amount={totalPending}    accent="border-l-4 border-l-yellow-400" />
+        <SummaryCard label="Processing"     amount={totalProcessing} accent="border-l-4 border-l-purple-400" />
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-3">
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="py-2.5 pl-3 pr-8 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+        >
+          {STATUS_OPTIONS.map((s) => (
+            <option key={s} value={s}>{s === 'All' ? 'All Statuses' : s.replace(/_/g, ' ')}</option>
+          ))}
+        </select>
+
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+          className="py-2.5 pl-3 pr-8 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+        >
+          {TYPE_OPTIONS.map((t) => (
+            <option key={t} value={t}>{t === 'All' ? 'All Types' : t.replace(/_/g, ' ')}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Table */}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Table<Payment>
+          columns={columns}
+          data={filtered}
+          emptyMessage="No payments match your filters."
+        />
+      )}
     </div>
   )
 }
