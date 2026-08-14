@@ -54,9 +54,9 @@ function StatCard({ label, value, icon: Icon, color, sub }: StatCardProps) {
     >
       <div
         className="flex items-center justify-center w-11 h-11 rounded-lg shrink-0"
-        style={{ background: color + '15' }}
+        style={{ background: color + '15', color }}
       >
-        <Icon size={20} style={{ color }} />
+        <Icon size={20} />
       </div>
       <div className="min-w-0">
         <p className="text-3xl font-bold text-gray-900 leading-none">{value}</p>
