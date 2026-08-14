@@ -87,7 +87,7 @@ export default function Participants() {
         p.requiresAssistance ? (
           <Badge value="ACTIVE" />
         ) : (
-          <span className="text-gray-400 text-[12px]">No</span>
+          <span className="text-gray-400 text-[16px]">No</span>
         ),
     },
   ]
@@ -98,10 +98,10 @@ export default function Participants() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[18px] font-bold text-gray-900">Participants</h2>
-          <p className="text-[13px] text-gray-500 mt-0.5">Patient records and enrollment tracking</p>
+          <h2 className="text-[24px] font-bold text-gray-900">Participants</h2>
+          <p className="text-[17px] text-gray-500 mt-0.5">Patient records and enrollment tracking</p>
         </div>
-        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+        <div className="flex items-center gap-2 text-[17px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
           <Users size={13} className="text-gray-400" />
           {filtered.length} {filtered.length === 1 ? 'participant' : 'participants'}
         </div>
@@ -116,13 +116,13 @@ export default function Participants() {
             placeholder="Search name or ref…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+            className="w-full pl-9 pr-4 py-2.5 text-[17px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
           />
         </div>
 
         <button
           onClick={() => setAssistance((v) => !v)}
-          className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium border transition-colors cursor-pointer ${
+          className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-[17px] font-medium border transition-colors cursor-pointer ${
             assistanceOnly
               ? 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100'
               : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'

@@ -112,10 +112,10 @@ export default function Messages() {
       {/* Page header */}
       <div className="flex items-center justify-between shrink-0">
         <div>
-          <h2 className="text-[18px] font-bold text-gray-900">Messages</h2>
-          <p className="text-[13px] text-gray-500 mt-0.5">Patient communication center</p>
+          <h2 className="text-[24px] font-bold text-gray-900">Messages</h2>
+          <p className="text-[17px] text-gray-500 mt-0.5">Patient communication center</p>
         </div>
-        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+        <div className="flex items-center gap-2 text-[17px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
           <MessageSquare size={13} className="text-gray-400" />
           {threads.length} {threads.length === 1 ? 'conversation' : 'conversations'}
         </div>
@@ -131,11 +131,11 @@ export default function Messages() {
             style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
           >
             <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--color-border)', background: '#F9FAFB' }}>
-              <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Participants</span>
+              <span className="text-[17px] font-semibold text-gray-400 uppercase tracking-wider">Participants</span>
             </div>
 
             {threads.length === 0 ? (
-              <div className="flex-1 flex items-center justify-center text-gray-400 text-[13px]">
+              <div className="flex-1 flex items-center justify-center text-gray-400 text-[17px]">
                 No messages yet
               </div>
             ) : (
@@ -151,26 +151,26 @@ export default function Messages() {
                     }`}
                   >
                     <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-semibold text-white shrink-0"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-[17px] font-semibold text-white shrink-0"
                       style={{ background: 'var(--color-primary-mid)' }}
                     >
                       {thread.participantName.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="text-[13px] font-medium text-gray-800 truncate">{thread.participantName}</span>
+                        <span className="text-[17px] font-medium text-gray-800 truncate">{thread.participantName}</span>
                         {thread.unreadCount > 0 && (
                           <span
-                            className="ml-2 shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full text-white text-[11px] font-bold"
+                            className="ml-2 shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full text-white text-[17px] font-bold"
                             style={{ background: 'var(--color-primary)' }}
                           >
                             {thread.unreadCount}
                           </span>
                         )}
                       </div>
-                      <p className="text-[12px] text-gray-400 truncate mt-0.5">{thread.lastMessage}</p>
+                      <p className="text-[16px] text-gray-400 truncate mt-0.5">{thread.lastMessage}</p>
                       {thread.lastMessageAt && (
-                        <p className="text-[11px] text-gray-400 mt-0.5">{fmt(thread.lastMessageAt)}</p>
+                        <p className="text-[17px] text-gray-400 mt-0.5">{fmt(thread.lastMessageAt)}</p>
                       )}
                     </div>
                   </li>
@@ -185,15 +185,15 @@ export default function Messages() {
             style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
           >
             {!selectedThread ? (
-              <div className="flex-1 flex items-center justify-center text-gray-400 text-[13px]">
+              <div className="flex-1 flex items-center justify-center text-gray-400 text-[17px]">
                 Select a participant to view messages
               </div>
             ) : (
               <>
                 <div className="px-5 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid var(--color-border)', background: '#F9FAFB' }}>
                   <div>
-                    <span className="font-semibold text-gray-800 text-[14px]">{selectedThread.participantName}</span>
-                    <span className="ml-2 text-[12px] text-gray-400">
+                    <span className="font-semibold text-gray-800 text-[16px]">{selectedThread.participantName}</span>
+                    <span className="ml-2 text-[16px] text-gray-400">
                       {selectedThread.messages.length} message{selectedThread.messages.length !== 1 ? 's' : ''}
                     </span>
                   </div>
@@ -201,7 +201,7 @@ export default function Messages() {
                     <button
                       onClick={handleMarkAllRead}
                       disabled={markReadMutation.isPending}
-                      className="text-[12px] font-medium disabled:opacity-50 transition-colors cursor-pointer hover:opacity-70"
+                      className="text-[16px] font-medium disabled:opacity-50 transition-colors cursor-pointer hover:opacity-70"
                       style={{ color: 'var(--color-primary)' }}
                     >
                       Mark all read ({selectedThread.unreadCount})
@@ -230,14 +230,14 @@ export default function Messages() {
                           } ${isUnread && !isOutbound ? 'ring-2 ring-blue-200' : ''}`}
                           style={isOutbound ? { background: 'var(--color-primary)' } : { border: '1px solid var(--color-border)' }}
                         >
-                          <p className="text-[13px] leading-relaxed">{body}</p>
+                          <p className="text-[17px] leading-relaxed">{body}</p>
                         </div>
                         <div className={`flex items-center gap-1.5 mt-1 ${isOutbound ? 'flex-row-reverse' : ''}`}>
-                          <span className="text-[11px] font-medium text-gray-500">{sender}</span>
+                          <span className="text-[17px] font-medium text-gray-500">{sender}</span>
                           {timestamp && (
                             <>
-                              <span className="text-gray-300 text-[11px]">·</span>
-                              <span className="text-[11px] text-gray-400">{fmt(timestamp)} {fmtTime(timestamp)}</span>
+                              <span className="text-gray-300 text-[17px]">·</span>
+                              <span className="text-[17px] text-gray-400">{fmt(timestamp)} {fmtTime(timestamp)}</span>
                             </>
                           )}
                           {isUnread && !isOutbound && (

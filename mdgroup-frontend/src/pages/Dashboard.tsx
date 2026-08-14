@@ -59,9 +59,9 @@ function StatCard({ label, value, icon: Icon, color, sub }: StatCardProps) {
         <Icon size={20} style={{ color }} />
       </div>
       <div className="min-w-0">
-        <p className="text-2xl font-bold text-gray-900 leading-none">{value}</p>
-        <p className="text-[13px] font-medium text-gray-700 mt-1">{label}</p>
-        <p className="text-[12px] text-gray-400 mt-0.5">{sub}</p>
+        <p className="text-3xl font-bold text-gray-900 leading-none">{value}</p>
+        <p className="text-[17px] font-medium text-gray-700 mt-1">{label}</p>
+        <p className="text-[16px] text-gray-400 mt-0.5">{sub}</p>
       </div>
     </div>
   )
@@ -105,21 +105,21 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-gray-900">{greeting}, {user?.firstName}</h2>
-          <p className="text-[13px] text-gray-500 mt-0.5">
+          <p className="text-[17px] text-gray-500 mt-0.5">
             {now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate('/reports')}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium text-gray-600 bg-white transition-colors hover:bg-gray-50 cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[17px] font-medium text-gray-600 bg-white transition-colors hover:bg-gray-50 cursor-pointer"
             style={{ border: '1px solid var(--color-border)' }}
           >
             Reports
           </button>
           <button
             onClick={() => navigate('/studies')}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium text-white cursor-pointer transition-opacity hover:opacity-90"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[17px] font-medium text-white cursor-pointer transition-opacity hover:opacity-90"
             style={{ background: 'var(--color-primary)' }}
           >
             <Activity size={14} />
@@ -145,11 +145,11 @@ export default function Dashboard() {
           <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
             <div className="flex items-center gap-2.5">
               <FlaskConical size={15} className="text-gray-400" />
-              <h3 className="text-[14px] font-semibold text-gray-900">Recent Studies</h3>
+              <h3 className="text-[16px] font-semibold text-gray-900">Recent Studies</h3>
             </div>
             <button
               onClick={() => navigate('/studies')}
-              className="flex items-center gap-1 text-[12px] font-medium transition-colors cursor-pointer hover:opacity-70"
+              className="flex items-center gap-1 text-[16px] font-medium transition-colors cursor-pointer hover:opacity-70"
               style={{ color: 'var(--color-primary)' }}
             >
               View all <ArrowRight size={12} />
@@ -157,7 +157,7 @@ export default function Dashboard() {
           </div>
 
           {recentStudiesLoading ? <Shimmer /> : recentStudies.length === 0 ? (
-            <p className="text-gray-400 text-[13px] text-center py-10">No studies found.</p>
+            <p className="text-gray-400 text-[17px] text-center py-10">No studies found.</p>
           ) : (
             <div>
               {recentStudies.map((s, i) => (
@@ -177,8 +177,8 @@ export default function Dashboard() {
                     {(s.phase ?? 'N/A').replace('PHASE_', 'P')}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-medium text-gray-900 truncate">{truncate(s.title ?? '', 40)}</p>
-                    <p className="text-[11px] text-gray-400 mt-0.5">{s.protocolNumber ?? '—'}</p>
+                    <p className="text-[17px] font-medium text-gray-900 truncate">{truncate(s.title ?? '', 40)}</p>
+                    <p className="text-[17px] text-gray-400 mt-0.5">{s.protocolNumber ?? '—'}</p>
                   </div>
                   {s.status && <Badge value={s.status} />}
                 </div>
@@ -192,11 +192,11 @@ export default function Dashboard() {
           <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
             <div className="flex items-center gap-2.5">
               <Clock size={15} className="text-gray-400" />
-              <h3 className="text-[14px] font-semibold text-gray-900">Upcoming Visits</h3>
+              <h3 className="text-[16px] font-semibold text-gray-900">Upcoming Visits</h3>
             </div>
             <button
               onClick={() => navigate('/visits')}
-              className="flex items-center gap-1 text-[12px] font-medium transition-colors cursor-pointer hover:opacity-70"
+              className="flex items-center gap-1 text-[16px] font-medium transition-colors cursor-pointer hover:opacity-70"
               style={{ color: 'var(--color-primary)' }}
             >
               View all <ArrowRight size={12} />
@@ -204,7 +204,7 @@ export default function Dashboard() {
           </div>
 
           {upcomingVisitsLoading ? <Shimmer /> : upcomingVisits.length === 0 ? (
-            <p className="text-gray-400 text-[13px] text-center py-10">No upcoming visits.</p>
+            <p className="text-gray-400 text-[17px] text-center py-10">No upcoming visits.</p>
           ) : (
             <div>
               {upcomingVisits.map((v, i) => {
@@ -227,18 +227,18 @@ export default function Dashboard() {
                     >
                       {v.scheduledDate ? (
                         <>
-                          <span className="text-[7px] font-bold leading-none uppercase">
+                          <span className="text-[9px] font-bold leading-none uppercase">
                             {new Date(v.scheduledDate).toLocaleDateString('en-US', { month: 'short' })}
                           </span>
-                          <span className="text-[11px] font-bold leading-none">
+                          <span className="text-[17px] font-bold leading-none">
                             {new Date(v.scheduledDate).getDate()}
                           </span>
                         </>
                       ) : <CalendarCheck size={11} />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-medium text-gray-900 truncate">{v.visitName ?? v.name ?? '—'}</p>
-                      <p className="text-[11px] text-gray-400 mt-0.5 truncate">{participantName}</p>
+                      <p className="text-[17px] font-medium text-gray-900 truncate">{v.visitName ?? v.name ?? '—'}</p>
+                      <p className="text-[17px] text-gray-400 mt-0.5 truncate">{participantName}</p>
                     </div>
                     {v.status && <Badge value={v.status} />}
                   </div>

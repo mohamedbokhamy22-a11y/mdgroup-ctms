@@ -35,7 +35,6 @@ export default function Sidebar({ open, onClose }: Props) {
 
   return (
     <>
-      {/* Sidebar panel */}
       <aside
         className="flex flex-col shrink-0 transition-all duration-200 ease-in-out"
         style={{
@@ -55,10 +54,10 @@ export default function Sidebar({ open, onClose }: Props) {
                 className="flex items-center justify-center w-9 h-9 rounded-lg shrink-0"
                 style={{ background: 'var(--color-primary)' }}
               >
-                <Activity size={16} className="text-white" />
+                <Activity size={18} className="text-white" />
               </div>
               <div>
-                <p className="font-bold text-[15px] leading-none" style={{ color: 'var(--color-primary)' }}>MDGroup</p>
+                <p className="font-bold text-[17px] leading-none" style={{ color: 'var(--color-primary)' }}>MDGroup</p>
                 <p className="text-[11px] text-gray-400 mt-0.5 font-medium tracking-wider uppercase">CTMS</p>
               </div>
             </div>
@@ -66,7 +65,7 @@ export default function Sidebar({ open, onClose }: Props) {
               onClick={onClose}
               className="flex items-center justify-center w-7 h-7 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors cursor-pointer"
             >
-              <X size={14} />
+              <X size={15} />
             </button>
           </div>
 
@@ -84,7 +83,7 @@ export default function Sidebar({ open, onClose }: Props) {
                         to={to}
                         end={to === '/'}
                         className={({ isActive }) =>
-                          `flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13.5px] font-medium transition-all whitespace-nowrap ${
+                          `flex items-center gap-3 px-3 py-2.5 rounded-lg text-[15px] font-medium transition-all whitespace-nowrap ${
                             isActive
                               ? 'text-white'
                               : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
@@ -94,7 +93,7 @@ export default function Sidebar({ open, onClose }: Props) {
                       >
                         {({ isActive }) => (
                           <>
-                            <Icon size={15} className={isActive ? 'text-white shrink-0' : 'text-gray-400 shrink-0'} />
+                            <Icon size={16} className={isActive ? 'text-white shrink-0' : 'text-gray-400 shrink-0'} />
                             <span className="truncate">{itemLabel}</span>
                           </>
                         )}
@@ -110,21 +109,21 @@ export default function Sidebar({ open, onClose }: Props) {
           <div className="px-3 py-4" style={{ borderTop: '1px solid var(--color-border)' }}>
             <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-gray-50">
               <div
-                className="flex items-center justify-center w-8 h-8 rounded-full text-[12px] font-bold text-white shrink-0"
+                className="flex items-center justify-center w-8 h-8 rounded-full text-[13px] font-bold text-white shrink-0"
                 style={{ background: 'var(--color-primary)' }}
               >
                 {user?.firstName?.[0]}{user?.lastName?.[0]}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-semibold text-gray-800 truncate leading-none">{user?.firstName} {user?.lastName}</p>
-                <p className="text-[11px] text-gray-400 truncate mt-0.5">{user?.role?.replace(/_/g, ' ')}</p>
+                <p className="text-[14px] font-semibold text-gray-800 truncate leading-none">{user?.firstName} {user?.lastName}</p>
+                <p className="text-[12px] text-gray-400 truncate mt-0.5">{user?.role?.replace(/_/g, ' ')}</p>
               </div>
               <button
                 onClick={logout}
                 title="Logout"
                 className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded cursor-pointer shrink-0"
               >
-                <LogOut size={14} />
+                <LogOut size={15} />
               </button>
             </div>
           </div>

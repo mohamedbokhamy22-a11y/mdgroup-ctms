@@ -47,7 +47,7 @@ export default function Badge({ value }: { value: string }) {
   const v = variants[value] ?? fallback
   return (
     <span
-      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap"
+      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[13px] font-semibold whitespace-nowrap"
       style={{ background: v.bg, color: v.color }}
     >
       <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: v.dot }} />

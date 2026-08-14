@@ -32,7 +32,7 @@ export default function Table<T>({ columns, data, onRowClick, emptyMessage = 'No
                 className="px-5 py-3.5 text-left"
                 style={{ width: col.width }}
               >
-                <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+                <span className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider">
                   {col.header}
                 </span>
               </th>
@@ -47,7 +47,7 @@ export default function Table<T>({ columns, data, onRowClick, emptyMessage = 'No
                   <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
                     <span className="text-xl">📭</span>
                   </div>
-                  <p className="text-gray-400 text-[13px] font-medium">{emptyMessage}</p>
+                  <p className="text-gray-400 text-[17px] font-medium">{emptyMessage}</p>
                 </div>
               </td>
             </tr>
@@ -69,7 +69,7 @@ export default function Table<T>({ columns, data, onRowClick, emptyMessage = 'No
                 onMouseLeave={e => { (e.currentTarget as HTMLTableRowElement).style.background = '' }}
               >
                 {columns.map((col, j) => (
-                  <td key={j} className="px-5 py-3 text-[13.5px] text-gray-700" style={{ maxWidth: col.width ?? '200px' }}>
+                  <td key={j} className="px-5 py-3 text-[15px] text-gray-700" style={{ maxWidth: col.width ?? '200px' }}>
                     <div className="truncate">
                       {col.cell(row)}
                     </div>

@@ -59,21 +59,21 @@ export default function StatCard({ label, value, icon: Icon, color = 'blue', sub
 
         {/* Value — Fira Code for data precision */}
         <p
-          className="font-mono text-2xl font-bold tracking-tight leading-none"
+          className="font-mono text-3xl font-bold tracking-tight leading-none"
           style={{ color: c.text }}
         >
           {value}
         </p>
 
         {/* Label */}
-        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mt-1.5">{label}</p>
+        <p className="text-[17px] font-semibold text-slate-400 uppercase tracking-widest mt-1.5">{label}</p>
 
         {/* Sub / trend */}
         {(trend || sub) && (
           <div className="mt-2.5 flex items-center gap-2 flex-wrap">
             {trend && (
               <span
-                className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                className="inline-flex items-center gap-1 text-[17px] font-semibold px-2 py-0.5 rounded-full"
                 style={{
                   background: trendDown ? 'rgba(185,28,28,0.08)' : 'rgba(21,128,61,0.08)',
                   color: trendDown ? '#B91C1C' : '#15803D',
@@ -83,7 +83,7 @@ export default function StatCard({ label, value, icon: Icon, color = 'blue', sub
                 {trend}
               </span>
             )}
-            {sub && <p className="text-[11px] text-slate-400 truncate">{sub}</p>}
+            {sub && <p className="text-[17px] text-slate-400 truncate">{sub}</p>}
           </div>
         )}
       </div>

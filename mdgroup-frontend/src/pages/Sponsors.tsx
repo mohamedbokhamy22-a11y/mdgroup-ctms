@@ -91,10 +91,10 @@ export default function Sponsors() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[18px] font-bold text-gray-900">Sponsors</h2>
-          <p className="text-[13px] text-gray-500 mt-0.5">Pharmaceutical and biotech partners</p>
+          <h2 className="text-[24px] font-bold text-gray-900">Sponsors</h2>
+          <p className="text-[17px] text-gray-500 mt-0.5">Pharmaceutical and biotech partners</p>
         </div>
-        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+        <div className="flex items-center gap-2 text-[17px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
           <Building2 size={13} className="text-gray-400" />
           {filtered.length} {filtered.length === 1 ? 'sponsor' : 'sponsors'}
         </div>
@@ -108,7 +108,7 @@ export default function Sponsors() {
           placeholder="Search by name…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-9 pr-4 py-2.5 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+          className="w-full pl-9 pr-4 py-2.5 text-[17px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
         />
       </div>
 

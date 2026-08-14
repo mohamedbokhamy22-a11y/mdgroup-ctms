@@ -23,7 +23,7 @@
   --sidebar-width:        256px;
   --header-height:        60px;
   --card-padding:         20px;
-  --table-row-height:     52px;
+  --table-row-height:     60px;
 
   --radius-sm:   6px;
   --radius-md:   10px;
@@ -42,8 +42,8 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.55;
   background: var(--color-background);
   color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
@@ -67,7 +67,7 @@ input[type="number"],
 textarea,
 select {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);

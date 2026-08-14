@@ -25,8 +25,8 @@ function formatDate(value: string | null | undefined): string {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">{label}</p>
-      <div className="text-[13.5px] text-gray-800 font-medium leading-snug">{children}</div>
+      <p className="text-[17px] font-semibold text-gray-400 uppercase tracking-wider mb-1">{label}</p>
+      <div className="text-[17px] text-gray-800 font-medium leading-snug">{children}</div>
     </div>
   )
 }
@@ -88,7 +88,7 @@ export default function StudyDetail() {
   if (!study) {
     return (
       <div className="flex items-center justify-center py-20 text-gray-400">
-        <p className="text-[14px]">Study not found.</p>
+        <p className="text-[16px]">Study not found.</p>
       </div>
     )
   }
@@ -99,7 +99,7 @@ export default function StudyDetail() {
       {/* Back link */}
       <Link
         to="/studies"
-        className="inline-flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-gray-800 transition-colors"
+        className="inline-flex items-center gap-1.5 text-[17px] text-gray-500 hover:text-gray-800 transition-colors"
       >
         <ArrowLeft size={14} />
         Back to Studies
@@ -114,9 +114,9 @@ export default function StudyDetail() {
           <FlaskConical size={20} className="text-white" />
         </div>
         <div>
-          <h2 className="text-[20px] font-bold text-gray-900 leading-tight">{study.title ?? 'Untitled Study'}</h2>
+          <h2 className="text-[24px] font-bold text-gray-900 leading-tight">{study.title ?? 'Untitled Study'}</h2>
           {study.protocolNumber && (
-            <p className="text-[13px] font-mono text-gray-400 mt-0.5">{study.protocolNumber}</p>
+            <p className="text-[17px] font-mono text-gray-400 mt-0.5">{study.protocolNumber}</p>
           )}
         </div>
       </div>
@@ -126,7 +126,7 @@ export default function StudyDetail() {
         className="bg-white rounded-xl p-6"
         style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
       >
-        <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-5">Study Details</p>
+        <p className="text-[16px] font-semibold text-gray-500 uppercase tracking-wider mb-5">Study Details</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
           <Field label="Phase">
             {study.phase ? <Badge value={study.phase} /> : '—'}
@@ -174,8 +174,8 @@ export default function StudyDetail() {
           className="bg-white rounded-xl p-6"
           style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
         >
-          <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Description</p>
-          <p className="text-[13.5px] text-gray-600 leading-relaxed whitespace-pre-line">{study.description}</p>
+          <p className="text-[16px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Description</p>
+          <p className="text-[17px] text-gray-600 leading-relaxed whitespace-pre-line">{study.description}</p>
         </div>
       )}
 
@@ -183,9 +183,9 @@ export default function StudyDetail() {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Users size={15} className="text-gray-400" />
-          <h3 className="text-[14px] font-semibold text-gray-800">Enrollments</h3>
+          <h3 className="text-[16px] font-semibold text-gray-800">Enrollments</h3>
           {!enrollmentsLoading && (
-            <span className="text-[12px] text-gray-400">({enrollments.length})</span>
+            <span className="text-[16px] text-gray-400">({enrollments.length})</span>
           )}
         </div>
 

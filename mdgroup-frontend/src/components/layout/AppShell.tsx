@@ -47,7 +47,6 @@ export default function AppShell() {
           }}
         >
           <div className="flex items-center gap-3">
-            {/* Burger toggle */}
             <button
               onClick={() => setSidebarOpen(v => !v)}
               className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors cursor-pointer"
@@ -56,9 +55,9 @@ export default function AppShell() {
             </button>
 
             <div>
-              <h1 className="text-[15px] font-semibold text-gray-900 leading-none">{page.title}</h1>
+              <h1 className="text-[16px] font-semibold text-gray-900 leading-none">{page.title}</h1>
               {page.subtitle && (
-                <p className="text-[12px] text-gray-400 mt-0.5">{page.subtitle}</p>
+                <p className="text-[13px] text-gray-400 mt-0.5">{page.subtitle}</p>
               )}
             </div>
           </div>
@@ -69,7 +68,7 @@ export default function AppShell() {
               style={{ border: '1px solid var(--color-border)' }}
             >
               <Search size={14} />
-              <span className="text-[13px] hidden sm:block text-gray-500">Search…</span>
+              <span className="text-[14px] hidden sm:block text-gray-500">Search…</span>
               <kbd className="hidden sm:block text-[11px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-400 font-sans border border-gray-200">⌘K</kbd>
             </div>
 
@@ -88,14 +87,14 @@ export default function AppShell() {
 
             <div className="flex items-center gap-2.5 cursor-pointer">
               <div
-                className="flex items-center justify-center w-8 h-8 rounded-full text-[11px] font-bold text-white shrink-0"
+                className="flex items-center justify-center w-8 h-8 rounded-full text-[12px] font-bold text-white shrink-0"
                 style={{ background: 'var(--color-primary)' }}
               >
                 {user?.firstName?.[0]}{user?.lastName?.[0]}
               </div>
               <div className="hidden sm:block">
-                <p className="text-[13px] font-semibold text-gray-800 leading-none">{user?.firstName} {user?.lastName}</p>
-                <p className="text-[11px] text-gray-400 mt-0.5">{user?.role?.replace(/_/g, ' ')}</p>
+                <p className="text-[14px] font-semibold text-gray-800 leading-none">{user?.firstName} {user?.lastName}</p>
+                <p className="text-[12px] text-gray-400 mt-0.5">{user?.role?.replace(/_/g, ' ')}</p>
               </div>
             </div>
           </div>

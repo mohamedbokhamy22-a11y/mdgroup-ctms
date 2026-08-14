@@ -44,8 +44,8 @@ function SummaryCard({ label, amount, accent }: SummaryCardProps) {
       className={`bg-white rounded-xl p-4 flex flex-col gap-1 ${accent}`}
       style={{ border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}
     >
-      <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{label}</span>
-      <span className="text-[22px] font-bold text-gray-800">$ {amount.toFixed(2)}</span>
+      <span className="text-[17px] font-semibold text-gray-400 uppercase tracking-wider">{label}</span>
+      <span className="text-[24px] font-bold text-gray-800">$ {amount.toFixed(2)}</span>
     </div>
   )
 }
@@ -182,10 +182,10 @@ export default function Payments() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[18px] font-bold text-gray-900">Payments</h2>
-          <p className="text-[13px] text-gray-500 mt-0.5">Stipends, reimbursements and expense claims</p>
+          <h2 className="text-[24px] font-bold text-gray-900">Payments</h2>
+          <p className="text-[17px] text-gray-500 mt-0.5">Stipends, reimbursements and expense claims</p>
         </div>
-        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+        <div className="flex items-center gap-2 text-[17px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
           <CreditCard size={13} className="text-gray-400" />
           {filtered.length} {filtered.length === 1 ? 'payment' : 'payments'}
         </div>
@@ -203,7 +203,7 @@ export default function Payments() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="py-2.5 pl-3 pr-8 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+          className="py-2.5 pl-3 pr-8 text-[17px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
         >
           {STATUS_OPTIONS.map((s) => (
             <option key={s} value={s}>{s === 'All' ? 'All Statuses' : s.replace(/_/g, ' ')}</option>
@@ -213,7 +213,7 @@ export default function Payments() {
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="py-2.5 pl-3 pr-8 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+          className="py-2.5 pl-3 pr-8 text-[17px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
         >
           {TYPE_OPTIONS.map((t) => (
             <option key={t} value={t}>{t === 'All' ? 'All Types' : t.replace(/_/g, ' ')}</option>

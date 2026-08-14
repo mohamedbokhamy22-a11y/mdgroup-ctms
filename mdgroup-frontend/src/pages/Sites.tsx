@@ -37,10 +37,10 @@ export default function Sites() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[18px] font-bold text-gray-900">Sites</h2>
-          <p className="text-[13px] text-gray-500 mt-0.5">Global research site network</p>
+          <h2 className="text-[24px] font-bold text-gray-900">Sites</h2>
+          <p className="text-[17px] text-gray-500 mt-0.5">Global research site network</p>
         </div>
-        <div className="flex items-center gap-2 text-[13px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
+        <div className="flex items-center gap-2 text-[17px] font-medium text-gray-500 px-3 py-1.5 rounded-lg bg-white" style={{ border: '1px solid var(--color-border)' }}>
           <MapPin size={13} className="text-gray-400" />
           {sites.length} {sites.length === 1 ? 'site' : 'sites'}
         </div>
@@ -53,13 +53,13 @@ export default function Sites() {
       >
         <div className="flex items-center gap-2 mb-3">
           <MapPin size={14} className="text-gray-400" />
-          <span className="text-[13px] font-semibold text-gray-700">Active Countries</span>
+          <span className="text-[17px] font-semibold text-gray-700">Active Countries</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {countryDots.map(({ country, color }) => (
             <div key={country} className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg" style={{ border: '1px solid var(--color-border)' }}>
               <div className={`w-2 h-2 rounded-full ${color}`} />
-              <span className="text-[13px] text-gray-700">{country}</span>
+              <span className="text-[17px] text-gray-700">{country}</span>
             </div>
           ))}
         </div>
@@ -72,7 +72,7 @@ export default function Sites() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Search by name, city or country…"
-          className="w-full pl-9 pr-4 py-2.5 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+          className="w-full pl-9 pr-4 py-2.5 text-[17px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
         />
       </div>
 

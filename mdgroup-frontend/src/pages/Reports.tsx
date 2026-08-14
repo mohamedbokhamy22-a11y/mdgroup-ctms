@@ -114,11 +114,11 @@ export default function Reports() {
     <div className="p-6 space-y-5" style={{ background: 'var(--color-background)' }}>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[18px] font-bold text-gray-900">Reports</h2>
-          <p className="text-[13px] text-gray-500 mt-0.5">Central reporting — aggregated data from all modules</p>
+          <h2 className="text-[24px] font-bold text-gray-900">Reports</h2>
+          <p className="text-[17px] text-gray-500 mt-0.5">Central reporting — aggregated data from all modules</p>
         </div>
         <div className="flex items-center gap-2">
-          {exportMsg && <span className="text-[12px] text-emerald-600 font-medium">{exportMsg}</span>}
+          {exportMsg && <span className="text-[16px] text-emerald-600 font-medium">{exportMsg}</span>}
         </div>
       </div>
 

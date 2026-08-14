@@ -70,7 +70,7 @@ export default function Login() {
               <Activity size={18} className="text-white" />
             </div>
             <div>
-              <p className="text-white font-black text-[18px] leading-none tracking-tight">MDGroup</p>
+              <p className="text-white font-black text-[24px] leading-none tracking-tight">MDGroup</p>
               <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.15em] mt-0.5">Research Network</p>
             </div>
           </div>
@@ -81,7 +81,7 @@ export default function Login() {
             <span style={{ color: '#38BDF8' }}>Management</span><br />
             Platform
           </h2>
-          <p className="text-slate-400 text-[13px] mt-4 leading-relaxed max-w-xs">
+          <p className="text-slate-400 text-[17px] mt-4 leading-relaxed max-w-xs">
             The unified operations platform for coordinating MDGroup's global clinical research programs.
           </p>
 
@@ -103,15 +103,15 @@ export default function Login() {
                   <Icon size={14} style={{ color: '#38BDF8' }} />
                 </div>
                 <div>
-                  <p className="text-white text-[12px] font-bold leading-none">{label}</p>
-                  <p className="text-slate-500 text-[11px] mt-1 leading-relaxed">{desc}</p>
+                  <p className="text-white text-[16px] font-bold leading-none">{label}</p>
+                  <p className="text-slate-500 text-[17px] mt-1 leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <p className="relative text-slate-700 text-[11px]">
+        <p className="relative text-slate-700 text-[17px]">
           &copy; {new Date().getFullYear()} MDGroup Clinical Research. All rights reserved.
         </p>
       </div>
@@ -124,7 +124,7 @@ export default function Login() {
           <div className="flex items-center justify-center w-9 h-9 rounded-xl" style={{ background: 'linear-gradient(135deg, #1E40AF, #0369A1)', boxShadow: '0 4px 14px rgba(30,64,175,0.4)' }}>
             <Activity size={16} className="text-white" />
           </div>
-          <p className="text-white font-black text-[18px]">MDGroup CTMS</p>
+          <p className="text-white font-black text-[24px]">MDGroup CTMS</p>
         </div>
 
         <div className="w-full max-w-[380px]">
@@ -138,8 +138,8 @@ export default function Login() {
             }}
           >
             <div className="mb-6">
-              <h3 className="text-[20px] font-black text-white tracking-tight">Sign in</h3>
-              <p className="text-slate-500 text-[12px] mt-1">Enter your credentials to access the platform</p>
+              <h3 className="text-[24px] font-black text-white tracking-tight">Sign in</h3>
+              <p className="text-slate-500 text-[16px] mt-1">Enter your credentials to access the platform</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -149,13 +149,13 @@ export default function Login() {
                   style={{ background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.2)' }}
                 >
                   <div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
-                  <p className="text-red-400 text-[12px]">{error}</p>
+                  <p className="text-red-400 text-[16px]">{error}</p>
                 </div>
               )}
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-[11px] font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">
+                <label htmlFor="email" className="block text-[17px] font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">
                   Email address
                 </label>
                 <input
@@ -166,7 +166,7 @@ export default function Login() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="you@mdgroup.com"
-                  className="w-full rounded-lg px-3.5 py-2.5 text-[13px] text-white placeholder-slate-600"
+                  className="w-full rounded-lg px-3.5 py-2.5 text-[17px] text-white placeholder-slate-600"
                   style={{
                     background: 'rgba(255,255,255,0.06)',
                     border: '1px solid rgba(255,255,255,0.1)',
@@ -179,7 +179,7 @@ export default function Login() {
 
               {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-[11px] font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">
+                <label htmlFor="password" className="block text-[17px] font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">
                   Password
                 </label>
                 <input
@@ -190,7 +190,7 @@ export default function Login() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full rounded-lg px-3.5 py-2.5 text-[13px] text-white placeholder-slate-600"
+                  className="w-full rounded-lg px-3.5 py-2.5 text-[17px] text-white placeholder-slate-600"
                   style={{
                     background: 'rgba(255,255,255,0.06)',
                     border: '1px solid rgba(255,255,255,0.1)',
@@ -205,7 +205,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 rounded-lg py-2.5 text-[13px] font-bold text-white transition-all mt-1 cursor-pointer disabled:opacity-60"
+                className="w-full flex items-center justify-center gap-2 rounded-lg py-2.5 text-[17px] font-bold text-white transition-all mt-1 cursor-pointer disabled:opacity-60"
                 style={{
                   background: loading ? 'rgba(30,64,175,0.5)' : 'linear-gradient(135deg, #1E40AF 0%, #0369A1 100%)',
                   boxShadow: loading ? 'none' : '0 4px 16px rgba(30,64,175,0.4)',
@@ -227,8 +227,8 @@ export default function Login() {
             style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
           >
             <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest mb-1.5">Demo credentials</p>
-            <p className="font-mono text-[12px] text-slate-500">admin@mdgroup.com</p>
-            <p className="font-mono text-[12px] text-slate-500">Password123!</p>
+            <p className="font-mono text-[16px] text-slate-500">admin@mdgroup.com</p>
+            <p className="font-mono text-[16px] text-slate-500">Password123!</p>
           </div>
         </div>
       </div>
